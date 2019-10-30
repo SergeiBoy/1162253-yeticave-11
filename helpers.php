@@ -149,3 +149,14 @@ function set_price($price) {
 	return number_format(ceil($price), 0, ',', ' ').' ₽';
 }
 
+
+//Определяет часы и минуты до окончания аукциона
+function get_time_remaining($deadline_date) {
+$time_remaining = strtotime($deadline_date) - time();
+$hours_remaining = str_pad(floor($time_remaining/3600), 2, "0", STR_PAD_LEFT);
+$minutes_remaining = str_pad(floor( ($time_remaining%3600)/60 ), 2, "0", STR_PAD_LEFT);
+return [$hours_remaining, $minutes_remaining];
+}
+
+
+
