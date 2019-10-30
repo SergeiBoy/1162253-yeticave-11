@@ -30,9 +30,9 @@
                             <span class="lot__amount"><?=htmlspecialchars($good['price']);?></span>
                             <span class="lot__cost"><?=set_price(htmlspecialchars($good['price']));?></span>
                         </div>
-                        <div class="lot__timer timer">
-                            12:23
-                        </div>
+                        <div class="lot__timer timer <?php if ( get_time_remaining($good['deadline_date'])[0] < 1 ): ?>timer--finishing<? endif; ?>">
+                            <?=implode(':', get_time_remaining($good['deadline_date']) );?>
+						</div>
                     </div>
                 </div>
             </li>
