@@ -144,3 +144,8 @@ function include_template($name, array $data = []) {
 }
 
 
+//Форматирует цену
+function set_price($price) {
+	return number_format(ceil($price), 0, ',', ' ').' ₽';
+}
+
