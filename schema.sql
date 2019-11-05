@@ -19,9 +19,9 @@ initial_price	DECIMAL,
 dt_end			TIMESTAMP,
 bid_step		DECIMAL,
 
-users_id_author	INT NOT NULL,
-users_id_winner	INT,
-categories_id	INT
+user_id_author	INT NOT NULL,
+user_id_winner	INT,
+category_id		INT
 );
 
 CREATE TABLE bids (
@@ -29,8 +29,8 @@ id				INT AUTO_INCREMENT PRIMARY KEY,
 dt_add			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 bid_price		DECIMAL,
 
-users_id		INT NOT NULL,
-lots_id			INT NOT NULL
+user_id			INT NOT NULL,
+lot_id			INT NOT NULL
 );
 
 CREATE TABLE users (
@@ -42,6 +42,21 @@ password		CHAR(64) NOT NULL,
 contact_info	TEXT
 );
 
+CREATE INDEX dt_add ON lots(dt_add);
 CREATE INDEX lot_name ON lots(lot_name);
+CREATE INDEX initial_price ON lots(initial_price);
+CREATE INDEX dt_end ON lots(dt_end);
+CREATE INDEX user_id_author ON lots(user_id_author);
+CREATE INDEX user_id_winner ON lots(user_id_winner);
+CREATE INDEX category_id ON lots(category_id);
+
+CREATE INDEX dt_add ON bids(dt_add);
+CREATE INDEX bid_price ON bids(bid_price);
+CREATE INDEX user_id ON bids(user_id);
+CREATE INDEX lot_id ON bids(lot_id);
+
+CREATE INDEX dt_reg ON users(dt_reg);
+
+
 
 
