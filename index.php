@@ -1,16 +1,11 @@
 <?php
 
-require_once('helpers.php');
+require_once('helpers.php'); //Подключение вспомогательных функций
+require_once('startup.php'); //Подключение к БД
 
+//Установка использующихся в коде переменных
 $is_auth = rand(0, 1);
 $user_name = 'Сергей'; // укажите здесь ваше имя
-
-//Подключение к БД
-$con = mysqli_connect("localhost", "root", "", "yeticave");
-	if ($con == false){
-	print("Ошибка подключения: " . mysqli_connect_error()); 
-	}
-mysqli_set_charset($con, "utf8");
 
 //Получаем список лотов из БД
 $sql = "SELECT lot_name, initial_price, img_path, MAX(bid_price) AS bid_price, category_name, lots.dt_add, dt_end 
