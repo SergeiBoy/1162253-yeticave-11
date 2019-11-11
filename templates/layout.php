@@ -47,7 +47,7 @@
     </div>
 </header>
 
-<main class="container"><?=$content;?></main>
+<main class="<?=$main_class;?>"><?=$content;?></main>
 </div>
 
 <footer class="main-footer">
