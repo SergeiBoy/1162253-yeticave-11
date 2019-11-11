@@ -8,11 +8,11 @@ $is_auth = rand(0, 1);
 $user_name = 'Сергей'; // укажите здесь ваше имя
 
 //Получаем список лотов из БД
-$sql = "SELECT lot_name, initial_price, img_path, MAX(bid_price) AS bid_price, category_name, lots.dt_add, dt_end 
+$sql = "SELECT lots.id, lot_name, initial_price, img_path, MAX(bid_price) AS bid_price, category_name, lots.dt_add, dt_end 
 FROM lots LEFT JOIN categories ON lots.category_id = categories.id
 LEFT JOIN bids ON lots.id = bids.lot_id
 WHERE dt_end > CURRENT_TIMESTAMP
-GROUP BY lot_name, initial_price, img_path, category_name, dt_add, dt_end 
+GROUP BY lots.id, lot_name, initial_price, img_path, category_name, dt_add, dt_end 
 ORDER BY lots.dt_add DESC";
 $result = mysqli_query($con, $sql);
 	if (!$result) {
@@ -34,7 +34,7 @@ $page_content = include_template('main.php',
 ['categories' => $categories, 'goods' => $goods]);
 
 $layout_content = include_template('layout.php', 
-['content' => $page_content, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories, 'title' => 'Главная']);
+['content' => $page_content, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories, 'title' => 'Главная', 'main_class' => 'container']);
 
 print($layout_content);
 
