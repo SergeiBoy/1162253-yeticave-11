@@ -158,5 +158,12 @@ $minutes_remaining = str_pad(floor( ($time_remaining%3600)/60 ), 2, "0", STR_PAD
 return [$hours_remaining, $minutes_remaining];
 }
 
+function is_positive_number($num){
+	return (filter_var($num, FILTER_VALIDATE_FLOAT) && filter_var($num, FILTER_VALIDATE_FLOAT)>0);
+}
+
+function is_positive_integer($num){
+	return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
+}
 
 

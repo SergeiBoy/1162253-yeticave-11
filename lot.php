@@ -2,19 +2,7 @@
 
 require_once('helpers.php'); //Подключение вспомогательных функций
 require_once('startup.php'); //Подключение к БД
-
-//Установка использующихся в коде переменных
-$is_auth = rand(0, 1);
-$user_name = 'Сергей'; // укажите здесь ваше имя
-
-//Получаем список категорий из БД
-$sql = "SELECT * FROM categories";
-$result = mysqli_query($con, $sql);
-	if (!$result) {
-	$error = mysqli_error($con);
-	print("Ошибка MySQL: " . $error); 
-	} 
-$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+require_once('data.php'); //Получаем список категорий (из БД) и другие данные
 
 //Получаем лот из БД
 if (!isset($_GET['id'])){
