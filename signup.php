@@ -18,13 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		} 
 	}
 	//Проверяем email
-	if (is_not_valid_email($messages, $con)) {
-		$errors['email'] = is_not_valid_email($messages, $con);
+	$email = $_POST['email'] ?? '';
+	if (is_not_valid_email($messages, $con, $email)) {
+		$errors['email'] = is_not_valid_email($messages, $con, $email);
 	}
-	
 	//Если ошибок нет - добавляем пользователя в БД
 	if(!count($errors)){
-		add_user($con);
+		add_user($con, $_POST['password'], $_POST['email'], $_POST['name'], $_POST['message']);
 		//Делаем переадресацию на форму входа
 		header("Location: pages/login.html");
 		exit();
