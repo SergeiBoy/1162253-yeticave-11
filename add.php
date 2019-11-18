@@ -7,7 +7,7 @@ require_once('data.php'); //Получаем список категорий (и
 //Создаем массив ошибок
 $errors = [];
 //Проверяем, что форма отправлена
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		
 	//Проверяем поля формы на пустоту
 	$required_fields = ['lot-name', 'message']; 
