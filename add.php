@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$required_fields = ['lot-name', 'message']; 
 	foreach ($required_fields as $field) {
 		if (empty($_POST[$field])) {
-		$errors[$field] = $messages['fill_it'];
+			$errors[$field] = $messages['fill_it'];
 		} 
 	}
 	//Проверяем, чтобы была указана категория, и определяем id выбранной категории
@@ -54,23 +54,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 	//Если ошибок нет - перемещаем файл изображения в uploads, добавляем лот в БД, делаем переадресацию на просмотр добавленного лота
 	if(!count($errors)){
-		$file_url = 'uploads/'.$_FILES['file']['name'];
+		$file_url = 'uploads/'.uniqid().'.'.pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
 		move_uploaded_file($_FILES['file']['tmp_name'], $file_url);
 		//Записываем лот в БД
-		$sql = "INSERT INTO lots (lot_name, category_id, description, img_path, initial_price, bid_step, dt_end, user_id_author) 
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO lots (dt_add, lot_name, category_id, description, img_path, initial_price, bid_step, dt_end, user_id_author) 
+				VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
 		$stmt = db_get_prepare_stmt($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], 1]); 
-		mysqli_stmt_execute($stmt); 
-		$last_id = mysqli_insert_id($con); 
-			if (!$last_id) {
-			$error = mysqli_error($con);
-			print("Ошибка MySQL: " . $error); 
-			} 
-						
-		//Делаем переадресацию на просмотр добавленного лота
-		header("Location: lot.php?id=$last_id");
-		exit;
-		
+		$res = mysqli_stmt_execute($stmt); 
+			if (!$res) {
+				$error = mysqli_error($con);
+				print("Ошибка MySQL: " . $error); 
+			} else {
+				//Делаем переадресацию на просмотр добавленного лота
+				$last_id = mysqli_insert_id($con); 
+				header("Location: lot.php?id=$last_id");
+				exit();
+			}
 	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон	
 	} else {
 		$errors['check'] = false;

@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 
 	//Подключение к БД
 $con = mysqli_connect("localhost", "root", "", "yeticave");
