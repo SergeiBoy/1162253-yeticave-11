@@ -4,6 +4,11 @@ require_once('helpers.php'); //Подключение вспомогательн
 require_once('startup.php'); //Подключение к БД
 require_once('data.php'); //Получаем список категорий (из БД) и другие данные
 
+//Закрываем доступ для анонимных пользователей
+if (!isset($_SESSION['user'])){
+	http_response_code(403);
+	exit();
+}
 //Создаем массив ошибок
 $errors = [];
 //Проверяем, что форма отправлена
@@ -59,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		//Записываем лот в БД
 		$sql = "INSERT INTO lots (dt_add, lot_name, category_id, description, img_path, initial_price, bid_step, dt_end, user_id_author) 
 				VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
-		$stmt = db_get_prepare_stmt($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], 1]); 
+		$stmt = db_get_prepare_stmt($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['user']['id']]); 
 		$res = mysqli_stmt_execute($stmt); 
 			if (!$res) {
 				$error = mysqli_error($con);
@@ -81,7 +86,7 @@ $page_content = include_template('add-lot.php',
 ['categories' => $categories, 'errors' => $errors]);
 
 $layout_content = include_template('layout.php', 
-['content' => $page_content, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories, 'title' => 'Добавление лота', 'main_class' => '']);
+['content' => $page_content, 'categories' => $categories, 'title' => 'Добавление лота', 'main_class' => '']);
 
 print($layout_content);
 
