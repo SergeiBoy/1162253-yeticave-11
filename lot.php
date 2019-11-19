@@ -33,7 +33,7 @@ if (!isset($_GET['id'])){
 	['categories' => $categories, 'lot' => $lot]);
 
 	$layout_content = include_template('layout.php', 
-	['content' => $page_content, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories, 'title' => $lot['lot_name'], 'main_class' => '']);
+	['content' => $page_content, 'categories' => $categories, 'title' => $lot['lot_name'], 'main_class' => '']);
 
 	print($layout_content);
 }

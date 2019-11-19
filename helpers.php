@@ -166,4 +166,22 @@ function is_positive_integer($num){
 	return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
 }
 
+function is_pass($con, $email, $password){
+	$sql = "SELECT id, user_name, password FROM users WHERE email = ?";
+	$stmt = db_get_prepare_stmt($con, $sql, [$email]); 
+	mysqli_stmt_execute($stmt); 
+	$res = mysqli_stmt_get_result($stmt); 
+		if (!$res) {
+			$error = mysqli_error($con);
+			print("Ошибка MySQL: " . $error); 
+		}
+	$user = mysqli_fetch_assoc($res);
+		if (!$user) {
+			$user = false;
+		} else if (!password_verify($password, $user['password'])) {
+			$user = false;
+		}
+
+	return $user;
+}
 

@@ -23,7 +23,7 @@ $page_content = include_template('main.php',
 ['categories' => $categories, 'goods' => $goods]);
 
 $layout_content = include_template('layout.php', 
-['content' => $page_content, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories, 'title' => 'Главная', 'main_class' => 'container']);
+['content' => $page_content, 'categories' => $categories, 'title' => 'Главная', 'main_class' => 'container']);
 
 print($layout_content);
 
