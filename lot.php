@@ -7,7 +7,7 @@ require_once('data.php'); //Получаем список категорий (и
 //Получаем лот из БД
 if (!isset($_GET['id'])){
 	header("HTTP/1.0 404 Not Found");
-	exit;
+	exit();
 } else {
 	$sql = "SELECT lots.id, lot_name, description, img_path, dt_end, initial_price, MAX(bid_price) AS bid_price, bid_step, category_name FROM lots 
 	LEFT JOIN categories ON lots.category_id = categories.id
@@ -26,7 +26,7 @@ if (!isset($_GET['id'])){
 	
 		if (!$lot['id']){
 			header("HTTP/1.0 404 Not Found");
-			exit;
+			exit();
 		} 
 	
 	$page_content = include_template('lot.php', 

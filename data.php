@@ -10,7 +10,9 @@ $messages = [
 	'enter_number' => 'Введите число',
 	'enter_int' => 'Введите целое число',
 	'enter_date' => 'Введите дату завершения торгов, не меньше суток вперед',
-	'add_file' => 'Добавьте файл в формате jpg, jpeg, png'
+	'add_file' => 'Добавьте файл в формате jpg, jpeg, png',
+	'fill_correct' => 'Заполните поле корректным значением',
+	'fill_another_email' => 'Введите другой email, этот уже занят'
 ];
 
 //Массив разрешенных форматов для картинок
@@ -19,14 +21,5 @@ $picture_types = ['image/png', 'image/jpeg'];
 //Установка использующихся в коде переменных
 $is_auth = rand(0, 1);
 $user_name = 'Сергей'; // укажите здесь ваше имя
-
-//Получаем список категорий из БД
-$sql = "SELECT * FROM categories";
-$result = mysqli_query($con, $sql);
-	if (!$result) {
-	$error = mysqli_error($con);
-	print("Ошибка MySQL: " . $error); 
-	} 
-$categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
