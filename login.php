@@ -1,8 +1,8 @@
 <?php
 
 require_once('helpers.php'); //Подключение вспомогательных функций
-require_once('startup.php'); //Подключение к БД
-require_once('data.php'); //Получаем список категорий (из БД) и другие данные
+require_once('startup.php'); //Подключение к БД и получение из нее категорий
+require_once('data.php'); //Данные для валидации форм
 
 //Создаем массив ошибок
 $errors = [];
