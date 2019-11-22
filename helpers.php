@@ -158,13 +158,50 @@ $minutes_remaining = str_pad(floor( ($time_remaining%3600)/60 ), 2, "0", STR_PAD
 return [$hours_remaining, $minutes_remaining];
 }
 
+//Определяет сколько времени назад была сделана ставка
+function get_time_since_adding($dt_add) {
+$time_since = time() - strtotime($dt_add);
+$H = floor($time_since/3600);
+$M = floor( ($time_since%3600)/60 );
+	if ($H < 24) {
+		if ( $H%20 >= 2 && $H%20 <= 4) {
+			$HF = 'часа';
+		} else if ( $H%20 == 1) {
+			$HF = 'час';
+		} else {
+			$HF = 'часов';
+		}
+			
+		if ( $M%100 >= 11 && $M%100 <= 20 ) {
+			$MF = 'минут';
+		} else if ($M%10 > 5) {
+			$MF = 'минут';
+		} else if ($M%10 === 1) {
+			$MF = 'минута';
+		} else if ($M%10 >= 2 && $M%10 <= 4) {
+			$MF = 'минуты';
+		} else {
+			$MF = 'минут';
+		}
+		
+		return ("$H $HF $M $MF назад");	
+		
+	}
+	
+	return NULL;
+	
+}
+
+
 function is_positive_number($num){
 	return (filter_var($num, FILTER_VALIDATE_FLOAT) && filter_var($num, FILTER_VALIDATE_FLOAT)>0);
 }
 
+
 function is_positive_integer($num){
 	return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
 }
+
 
 function is_pass($con, $email, $password){
 	$sql = "SELECT id, user_name, password FROM users WHERE email = ?";

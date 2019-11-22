@@ -1,10 +1,10 @@
 <nav class="nav">
       <ul class="nav__list container">
-        <? foreach ($categories as $category): ?>
+        <?php foreach ($categories as $category): ?>
 		<li class="nav__item">
           <a href="all-lots.html"><?=$category['category_name'];?></a>
         </li>
-        <? endforeach; ?>
+        <?php endforeach; ?>
       </ul>
     </nav>
     <form class="form container <?= isset($errors['check']) ? 'form--invalid' : '';?>" action="signup.php" method="post" autocomplete="off">
@@ -33,3 +33,4 @@
       <button type="submit" class="button">Зарегистрироваться</button>
       <a class="text-link" href="#">Уже есть аккаунт</a>
     </form>
+	

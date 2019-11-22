@@ -1,10 +1,10 @@
 	<nav class="nav">
       <ul class="nav__list container">
-		<? foreach ($categories as $category): ?>
+		<?php foreach ($categories as $category): ?>
         <li class="nav__item">
           <a href="all-lots.html"><?=$category['category_name'];?></a>
         </li>
-		<? endforeach; ?>
+		<?php endforeach; ?>
       </ul>
     </nav>
     <div class="container">
@@ -14,7 +14,7 @@
 				<p>Ничего не найдено по вашему запросу</p>
 			<?php endif; ?>
         <ul class="lots__list">
-          <? foreach ($goods as $good): ?>
+          <?php foreach ($goods as $good): ?>
 		  <li class="lots__item lot">
             <div class="lot__image">
               <img src="<?=$good['img_path'];?>" width="350" height="260" alt="<?=htmlspecialchars($good['lot_name']);?>">
@@ -27,13 +27,13 @@
                   <span class="lot__amount"><?=htmlspecialchars($good['bid_price']);?></span>
                   <span class="lot__cost"><?=set_price(htmlspecialchars($good['initial_price']));?></span>
                 </div>
-                <div class="lot__timer timer <?php if ( get_time_remaining($good['dt_end'])[0] < 1 ): ?>timer--finishing<? endif; ?>">
+                <div class="lot__timer timer <?php if ( get_time_remaining($good['dt_end'])[0] < 1 ): ?>timer--finishing<?php endif; ?>">
                   <?=implode(':', get_time_remaining($good['dt_end']) );?>
                 </div>
               </div>
             </div>
           </li>
-		  <? endforeach; ?>
+		  <?php endforeach; ?>
         </ul>
       </section>
       <ul class="pagination-list">
