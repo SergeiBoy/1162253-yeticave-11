@@ -11,6 +11,8 @@ $result = mysqli_query($con, $sql);
 	} 
 $lots_time_ended = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+$winners = [];
+$winners_id = [];
 foreach ($lots_time_ended as $lot) {
 	$id = $lot['id'];
 	$sql = "SELECT users.id, user_name, email FROM bids LEFT JOIN users ON bids.user_id = users.id
@@ -23,17 +25,40 @@ foreach ($lots_time_ended as $lot) {
 		} 
 	$winner = mysqli_fetch_assoc($result);
 	
-	//Если ставка найдена - отправляем письмо победителю и вносим его в таблицу
-	if ($winner !== NULL) {
-		
-		//Вносим победителя в таблицу
-		$winner_id = $winner['id'];
-		$sql = "UPDATE lots SET user_id_winner = '$winner_id' WHERE id = '$id'";
+		if ($winner !== NULL) {
+			
+			//Вносим победителя в таблицу
+		$sql = "UPDATE lots SET user_id_winner = ".$winner['id']." WHERE id = '$id'";
 		$result = mysqli_query($con, $sql);
 			if (!$result) {
 			$error = mysqli_error($con);
 			print("Ошибка MySQL: " . $error); 
 			} 		
+		//Формируем массив победителей с выигранными ими лотами
+		if ( !in_array($winner['id'], $winners_id) ) {
+			$winners_id[] = $winner['id'];
+			$winner['lot'][] =  [
+								'id' => $lot['id'],
+								'lot_name' => $lot['lot_name'],
+								];
+			
+			$winners[] = $winner;
+		} else {
+			foreach ($winners as &$win){
+				if ($win['id'] === $winner['id']) {
+					$win['lot'][] = [
+									'id' => $lot['id'],
+									'lot_name' => $lot['lot_name'],
+									];
+					break;
+				}
+			}
+		}
+	}	
+}
+
+	//Отправляем письма
+foreach ($winners as $winner) {
 				
 		// Create the Transport
 		$transport = (new Swift_SmtpTransport('phpdemo.ru', 25))
@@ -53,14 +78,12 @@ foreach ($lots_time_ended as $lot) {
 		$message->setFrom(['keks@phpdemo.ru' => 'Keks']);
 		$message->setTo(["$winner_email" => "$winner_name"]);
 		
-		$msg_content = include_template('email.php', 
-		['lot' => $lot, 'winner' => $winner]);
+		$msg_content = include_template('email.php', ['winner' => $winner]);
 		$message->setBody("$msg_content", 'text/html');
 		
 		// Send the message
 		$result = $mailer->send($message);
 		
-	}
 }
 
 
