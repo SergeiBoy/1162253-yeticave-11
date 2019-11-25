@@ -2,6 +2,7 @@
 
 require_once('helpers.php'); //Подключение вспомогательных функций
 require_once('startup.php'); //Подключение к БД и получение из нее категорий
+require_once('getwinner.php'); //Подключение сценария определения победителя
 
 //Получаем список лотов из БД
 $sql = "SELECT lots.id, lot_name, initial_price, img_path, MAX(bid_price) AS bid_price, category_name, lots.dt_add, dt_end 
