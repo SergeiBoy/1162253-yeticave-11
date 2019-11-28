@@ -50,8 +50,8 @@
         <ul class="nav__list container">
             <!--заполните этот список из массива категорий-->
 		<?php foreach ($categories as $category): ?>
-            <li class="nav__item">
-                <a href="pages/all-lots.html"><?=htmlspecialchars($category['category_name']);?></a>
+            <li class="nav__item <?php if ( isset($category['cur_category']) ): ?>nav__item--current<?php endif; ?>">
+                <a href="alllots.php?id=<?=$category['id'];?>"><?=$category['category_name'];?></a>
             </li>
 		<?php endforeach; ?>
         </ul>
