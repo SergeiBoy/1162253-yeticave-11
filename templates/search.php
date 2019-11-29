@@ -2,14 +2,14 @@
       <ul class="nav__list container">
 		<?php foreach ($categories as $category): ?>
         <li class="nav__item">
-          <a href="alllots.php?id=<?=$category['id'];?>"><?=$category['category_name'];?></a>
+          <a href="alllots.php?category_id=<?=$category['id'];?>"><?=$category['category_name'];?></a>
         </li>
 		<?php endforeach; ?>
       </ul>
     </nav>
     <div class="container">
       <section class="lots">
-        <h2>Результаты поиска по запросу «<span>Union</span>»</h2>
+        <h2>Результаты поиска по запросу «<span><?= htmlspecialchars($search ?? '');?></span>»</h2>
 			<?php if (!$goods): ?>
 				<p>Ничего не найдено по вашему запросу</p>
 			<?php endif; ?>
@@ -36,13 +36,20 @@
 		  <?php endforeach; ?>
         </ul>
       </section>
+	  <?php if ($pages_quantity > 1): ?>
       <ul class="pagination-list">
-        <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
-        <li class="pagination-item pagination-item-active"><a>1</a></li>
-        <li class="pagination-item"><a href="#">2</a></li>
-        <li class="pagination-item"><a href="#">3</a></li>
-        <li class="pagination-item"><a href="#">4</a></li>
-        <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
+        <li class="pagination-item pagination-item-prev">
+			<a <?php if ( $cur_page_number > 1 ): ?>href="search.php?search=<?= htmlspecialchars($search ?? '');?>&page=<?=($cur_page_number - 1);?>"<?php endif; ?>>Назад</a>
+		</li>
+		<?php for ($i = 1; $i <= $pages_quantity; $i++): ?>
+        <li class="pagination-item <?php if ( $cur_page_number === $i ): ?>pagination-item-active<?php endif; ?>">
+			<a <?php if ( $cur_page_number !== $i ): ?>href="search.php?search=<?= htmlspecialchars($search ?? '');?>&page=<?=$i;?>"<?php endif; ?>><?=$i;?></a>
+		</li>
+		<?php endfor; ?>
+        <li class="pagination-item pagination-item-next">
+			<a <?php if ( $cur_page_number < $pages_quantity ): ?>href="search.php?search=<?= htmlspecialchars($search ?? '');?>&page=<?=($cur_page_number + 1);?>"<?php endif; ?>>Вперед</a>
+		</li>
       </ul>
+	  <?php endif; ?>
     </div>
 	
