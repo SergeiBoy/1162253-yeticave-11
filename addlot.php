@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	} else {
 		$category_id = NULL;
 		foreach ($categories as $category) {
-			if ($category['category_name'] == $_POST['category']) {
+			if ($category['category_name'] === $_POST['category']) {
 				$category_id = $category['id'];
 				break;
 			}

@@ -2,7 +2,7 @@
 
 //Проверка email
 function is_not_valid_email($messages, $con, $email) {
-	$msg = '';
+	$msg = false;
 	if (empty($email)) {
 		$msg = $messages['fill_it'];
 	} else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

@@ -7,7 +7,7 @@
 	  <?php endforeach; ?>
       </ul>
     </nav>
-    <form class="form form--add-lot container <?= isset($errors['check']) ? 'form--invalid' : '';?>" action="add.php" method="post" enctype="multipart/form-data"> 
+    <form class="form form--add-lot container <?= isset($errors['check']) ? 'form--invalid' : '';?>" action="addlot.php" method="post" enctype="multipart/form-data"> 
       <h2>Добавление лота</h2>
       <div class="form__container-two">
         <div class="form__item <?= isset($errors['lot-name']) ? 'form__item--invalid' : '';?>"> 
@@ -20,7 +20,7 @@
           <select id="category" name="category">
             <option>Выберите категорию</option>
 		<?php foreach ($categories as $category): ?>
-            <option <?php if (isset($_POST['category'])){if ($_POST['category'] == $category['category_name']) {echo ('selected');}}; ?>><?=$category['category_name'];?></option>
+            <option <?php if (isset($_POST['category'])){if ($_POST['category'] === $category['category_name']) {echo ('selected');}}; ?>><?=$category['category_name'];?></option>
 		<?php endforeach; ?>
           </select>
           <span class="form__error"><?= $errors['category'] ?? '';?></span>

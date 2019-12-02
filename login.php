@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if(!count($errors)){
 		$user = is_pass($con, $_POST['email'], $_POST['password']);
 		if (!$user) {
-			$errors['password'] = $messages['wrong_password'];
+			$errors['email_password'] = $messages['wrong_password_email'];			
 		} else {
 			$_SESSION['user'] = $user;
 		}

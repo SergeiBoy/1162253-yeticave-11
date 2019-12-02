@@ -155,8 +155,7 @@ function get_time_remaining($deadline_date) {
 $time_remaining = strtotime($deadline_date) - time();
 $hours_remaining = str_pad(floor($time_remaining/3600), 2, "0", STR_PAD_LEFT);
 $minutes_remaining = str_pad(floor( ($time_remaining%3600)/60 ), 2, "0", STR_PAD_LEFT);
-$seconds_remaining = str_pad(floor( ($time_remaining%3600)%60 ), 2, "0", STR_PAD_LEFT);
-return [$hours_remaining, $minutes_remaining, $seconds_remaining];
+return [$hours_remaining, $minutes_remaining];
 }
 
 //Определяет сколько времени назад была сделана ставка
