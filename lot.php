@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 //Получаем лот из БД
-$sql = "SELECT lots.id, lot_name, description, img_path, dt_end, initial_price, MAX(bid_price) AS bid_price, bid_step, category_name FROM lots 
+$sql = "SELECT lots.id, lot_name, description, img_path, dt_end, initial_price, MAX(bid_price) AS bid_price, bid_step, category_name, user_id_author FROM lots 
 LEFT JOIN categories ON lots.category_id = categories.id
 LEFT JOIN bids ON lots.id = bids.lot_id
 WHERE lots.id = ?
-GROUP BY lots.id, lot_name, description, img_path, dt_end, initial_price, bid_step, category_name";
+GROUP BY lots.id, lot_name, description, img_path, dt_end, initial_price, bid_step, category_name, user_id_author";
 
 $stmt = db_get_prepare_stmt($con, $sql, [$id]); 
 mysqli_stmt_execute($stmt); 
@@ -45,7 +45,7 @@ $lot = mysqli_fetch_assoc($result);
 		exit();
 	} 
 
-$_SESSION['good_id'] = $lot['id'];
+$_SESSION['good_id'] = intval($lot['id']);
 
 
 //Создаем массив ошибок
@@ -82,11 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 //Получаем историю ставок
-$sql = "SELECT dt_add, DATE_FORMAT(dt_add, '%d.%m.%y %H:%i') AS dt_add_format, bid_price, user_name FROM bids
+$sql = "SELECT dt_add, DATE_FORMAT(dt_add, '%d.%m.%y %H:%i') AS dt_add_format, bid_price, user_name, user_id FROM bids
 LEFT JOIN users ON bids.user_id = users.id
 WHERE lot_id = ?
-ORDER BY bid_price DESC
-LIMIT 10";
+ORDER BY bid_price DESC";
 
 $stmt = db_get_prepare_stmt($con, $sql, [$id]); 
 mysqli_stmt_execute($stmt); 
@@ -97,9 +96,16 @@ $result = mysqli_stmt_get_result($stmt);
 		} 
 $history = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+//Логика показа блока добавления ставок
+$is_bidding_show = true;
+if ( !isset($_SESSION['user']['id']) || strtotime($lot['dt_end']) < time() ) {
+	$is_bidding_show = false;
+} elseif ( intval($_SESSION['user']['id']) === intval($lot['user_id_author']) || intval($_SESSION['user']['id']) === intval($history[0]['user_id'] ?? 0) ) {
+	$is_bidding_show = false;
+}
 
 $page_content = include_template('lot.php', 
-['categories' => $categories, 'lot' => $lot, 'errors' => $errors, 'history' => $history]);
+['categories' => $categories, 'lot' => $lot, 'errors' => $errors, 'history' => $history, 'is_bidding_show' => $is_bidding_show]);
 
 $layout_content = include_template('layout.php', 
 ['content' => $page_content, 'categories' => $categories, 'title' => $lot['lot_name'], 'main_class' => '']);

@@ -1,6 +1,14 @@
 <?php
 
-//Проверка email
+/**
+ * Проверяет email при регистрации
+ *
+ * @param array $messages Массив сообщений об ошибках заполнения форм
+ * @param $con mysqli Ресурс соединения
+ * @param string $email email пользователя
+ *
+ * @return string сообщение об ошибке заполнения формы, иначе bool false
+ */
 function is_not_valid_email($messages, $con, $email) {
 	$msg = false;
 	if (empty($email)) {
@@ -23,7 +31,17 @@ function is_not_valid_email($messages, $con, $email) {
 	return $msg;
 }
 
-//Добавление пользователя
+/**
+ * Добавляет пользователя в базу данных
+ *
+ * @param $con mysqli Ресурс соединения
+ * @param string $pasword Пароль пользователя
+ * @param string $email email пользователя
+ * @param string $name Имя пользователя
+ * @param string $message Контактная информация пользователя
+ *
+ * @return bool true Если добавление в БД успешно, иначе false
+ */
 function add_user($con, $password, $email, $name, $message) {
 	$passwordHash = password_hash($password, PASSWORD_DEFAULT);
 	$sql = "INSERT INTO users (dt_reg, email, user_name, password, contact_info) 
@@ -33,7 +51,9 @@ function add_user($con, $password, $email, $name, $message) {
 		if (!$res) {
 			$error = mysqli_error($con);
 			print("Ошибка MySQL: " . $error); 
+			return false;
 		} 
+	return true;
 }
 
 

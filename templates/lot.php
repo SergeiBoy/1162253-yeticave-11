@@ -18,7 +18,7 @@
           <p class="lot-item__description"><?=$lot['description'];?></p>
         </div>
         <div class="lot-item__right">
-          <?php if (isset($_SESSION['user'])): ?>
+          <?php if ($is_bidding_show): ?>
 		  <div class="lot-item__state">
             <div class="lot-item__timer timer <?php if ( get_time_remaining($lot['dt_end'])[0] < 1 ): ?>timer--finishing<?php endif; ?>">
               <?=implode(':', get_time_remaining($lot['dt_end']) );?>
@@ -45,7 +45,7 @@
           </div>
 		  <?php endif; ?>
           <div class="history">
-            <h3>История ставок (<span>10</span>)</h3>
+            <h3>История ставок (<span><?=count($history) ?? '';?></span>)</h3>
             <table class="history__list">
               <?php foreach ($history as $history_bid): ?>
 			  <tr class="history__item">

@@ -143,14 +143,24 @@ function include_template($name, array $data = []) {
     return $result;
 }
 
-
-//Форматирует цену
+/**
+ * Форматирует цену (на главной странице)
+ *
+ * @param float $price Цена
+ *
+ * @return string Цена, округленная до ближайшего большего целого, с добавлением символа рубля
+ */
 function set_price($price) {
 	return number_format(ceil($price), 0, ',', ' ').' ₽';
 }
 
-
-//Определяет часы и минуты до окончания аукциона
+/**
+ * Определяет часы и минуты до окончания аукциона
+ *
+ * @param string $deadline_date Дата в формате YYYY-MM-DD
+ *
+ * @return array Остающиеся до $deadline_date часы и минуты
+ */
 function get_time_remaining($deadline_date) {
 $time_remaining = strtotime($deadline_date) - time();
 $hours_remaining = str_pad(floor($time_remaining/3600), 2, "0", STR_PAD_LEFT);
@@ -158,7 +168,14 @@ $minutes_remaining = str_pad(floor( ($time_remaining%3600)/60 ), 2, "0", STR_PAD
 return [$hours_remaining, $minutes_remaining];
 }
 
-//Определяет сколько времени назад была сделана ставка
+/**
+ * Определяет сколько времени назад была сделана ставка
+ *
+ * @param string $dt_add Дата в формате YYYY-MM-DD HH:ii:ss
+ *
+ * @return string Если прошло меньше 24 часов, то строка, например "5 часов 18 минут назад",
+ *                иначе возвращает NULL
+ */
 function get_time_since_adding($dt_add) {
 $time_since = time() - strtotime($dt_add);
 $H = floor($time_since/3600);
@@ -192,17 +209,37 @@ $M = floor( ($time_since%3600)/60 );
 	
 }
 
-
+/**
+ * Определяет является ли переданное значение положительным числом
+ *
+ * @param float/int/string $num Число
+ *
+ * @return bool true, если является, иначе false
+ */
 function is_positive_number($num){
 	return (filter_var($num, FILTER_VALIDATE_FLOAT) && filter_var($num, FILTER_VALIDATE_FLOAT)>0);
 }
 
-
+/**
+ * Определяет является ли переданное значение положительным целым числом
+ *
+ * @param float/int/string $num Число
+ *
+ * @return bool true, если является, иначе false
+ */
 function is_positive_integer($num){
 	return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
 }
 
-
+/**
+ * Выполняет аутентификацию
+ *
+ * @param $con mysqli Ресурс соединения
+ * @param string $email email пользователя
+ * @param string $pasword Пароль пользователя
+ *
+ * @return array с данными пользователя, если является, иначе bool false
+ */
 function is_pass($con, $email, $password){
 	$sql = "SELECT id, user_name, password FROM users WHERE email = ?";
 	$stmt = db_get_prepare_stmt($con, $sql, [$email]); 

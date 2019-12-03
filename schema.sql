@@ -37,7 +37,7 @@ CREATE TABLE users (
 id				INT AUTO_INCREMENT PRIMARY KEY,
 dt_reg			TIMESTAMP,
 email			VARCHAR(128) NOT NULL UNIQUE,
-user_name		VARCHAR(128) NOT NULL UNIQUE,
+user_name		VARCHAR(128) NOT NULL,
 password		CHAR(64) NOT NULL,
 contact_info	TEXT
 );
