@@ -8,18 +8,17 @@
       </ul>
     </nav>
     <section class="lot-item container">
-      <h2><?=$lot['lot_name'];?></h2>
+      <h2><?=htmlspecialchars($lot['lot_name']);?></h2>
       <div class="lot-item__content">
         <div class="lot-item__left">
           <div class="lot-item__image">
-            <img src="<?=$lot['img_path'];?>" width="730" height="548" alt="<?=$lot['lot_name'];?>">
+            <img src="<?=htmlspecialchars($lot['img_path']);?>" width="730" height="548" alt="<?=htmlspecialchars($lot['lot_name']);?>">
           </div>
           <p class="lot-item__category">Категория: <span><?=$lot['category_name'];?></span></p>
-          <p class="lot-item__description"><?=$lot['description'];?></p>
+          <p class="lot-item__description"><?=htmlspecialchars($lot['description']);?></p>
         </div>
         <div class="lot-item__right">
-          <?php if ($is_bidding_show): ?>
-		  <div class="lot-item__state">
+          <div class="lot-item__state">
             <div class="lot-item__timer timer <?php if ( get_time_remaining($lot['dt_end'])[0] < 1 ): ?>timer--finishing<?php endif; ?>">
               <?=implode(':', get_time_remaining($lot['dt_end']) );?>
             </div>
@@ -32,6 +31,7 @@
                 Мин. ставка <span><?= $lot['bid_price'] ? ($lot['bid_price'] + $lot['bid_step']) : ($lot['initial_price'] + $lot['bid_step']);?></span>
               </div>
             </div>
+			<?php if ($is_bidding_show): ?>
             <form class="lot-item__form" action="lot.php" method="post" autocomplete="off">
               <p class="lot-item__form-item form__item form__item--invalid">
                 <label for="cost">Ваша ставка</label>
@@ -42,10 +42,10 @@
               </p>
               <button type="submit" class="button">Сделать ставку</button>
             </form>
+			<?php endif; ?>
           </div>
-		  <?php endif; ?>
-          <div class="history">
-            <h3>История ставок (<span><?=count($history) ?? '';?></span>)</h3>
+		  <div class="history">
+            <h3>История ставок (<span><?=count($history);?></span>)</h3>
             <table class="history__list">
               <?php foreach ($history as $history_bid): ?>
 			  <tr class="history__item">

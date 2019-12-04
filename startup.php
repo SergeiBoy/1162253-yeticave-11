@@ -2,9 +2,11 @@
 
 session_start();
 
-	//Подключение к БД
-$con = mysqli_connect("localhost", "root", "", "yeticave");
-	if ($con == false){
+//Подключение к БД
+$con = mysqli_init(); 
+mysqli_options($con, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1); 
+$result = mysqli_real_connect($con, "localhost", "root", "", "yeticave");
+	if ($result === false){
 	print("Ошибка подключения: " . mysqli_connect_error()); 
 	}
 mysqli_set_charset($con, "utf8");

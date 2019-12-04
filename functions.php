@@ -19,12 +19,12 @@ function is_not_valid_email($messages, $con, $email) {
 		$sql = "SELECT id FROM users WHERE email = ?";
 		$stmt = db_get_prepare_stmt($con, $sql, [$email]); 
 		mysqli_stmt_execute($stmt); 
-		$res = mysqli_stmt_get_result($stmt); 
-			if (!$res) {
+		$result = mysqli_stmt_get_result($stmt); 
+			if (!$result) {
 				$error = mysqli_error($con);
 				print("Ошибка MySQL: " . $error); 
 				$msg = $messages['fill_it'];
-			} else if (mysqli_num_rows($res) > 0) {
+			} else if (mysqli_num_rows($result) > 0) {
 				$msg = $messages['fill_another_email'];
 			}
 	}
@@ -47,8 +47,8 @@ function add_user($con, $password, $email, $name, $message) {
 	$sql = "INSERT INTO users (dt_reg, email, user_name, password, contact_info) 
 			VALUES (NOW(), ?, ?, '$passwordHash', ?)";
 	$stmt = db_get_prepare_stmt($con, $sql, [$email, $name, $message]); 
-	$res = mysqli_stmt_execute($stmt); 
-		if (!$res) {
+	$result = mysqli_stmt_execute($stmt); 
+		if (!$result) {
 			$error = mysqli_error($con);
 			print("Ошибка MySQL: " . $error); 
 			return false;

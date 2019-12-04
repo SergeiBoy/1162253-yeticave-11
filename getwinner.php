@@ -14,9 +14,9 @@ $lots_time_ended = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $winners = [];
 $winners_id = [];
 foreach ($lots_time_ended as $lot) {
-	$id = $lot['id'];
+	//Находим победителя
 	$sql = "SELECT users.id, user_name, email FROM bids LEFT JOIN users ON bids.user_id = users.id
-	WHERE bids.lot_id = '$id'
+	WHERE bids.lot_id = '".$lot['id']."'
 	ORDER BY bid_price DESC";
 	$result = mysqli_query($con, $sql);
 		if (!$result) {
@@ -28,7 +28,7 @@ foreach ($lots_time_ended as $lot) {
 		if ($winner !== NULL) {
 			
 			//Вносим победителя в таблицу
-		$sql = "UPDATE lots SET user_id_winner = ".$winner['id']." WHERE id = '$id'";
+		$sql = "UPDATE lots SET user_id_winner = '".$winner['id']."' WHERE id = '".$lot['id']."'";
 		$result = mysqli_query($con, $sql);
 			if (!$result) {
 			$error = mysqli_error($con);

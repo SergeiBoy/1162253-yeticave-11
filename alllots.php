@@ -3,8 +3,7 @@
 require_once('helpers.php'); //Подключение вспомогательных функций
 require_once('startup.php'); //Подключение к БД и получение из нее категорий
 
-$cur_category_id = $_GET['category_id'] ?? 1;
-$cur_category_id = intval($cur_category_id);
+$cur_category_id = intval($_GET['category_id'] ?? 1);
 
 foreach ($categories as &$category) {
 	if ( $cur_category_id === intval($category['id']) ) {
@@ -29,8 +28,7 @@ $lots_quantity = mysqli_fetch_assoc($result)['cnt'];
 //Рассчитываем пагинацию
 $lots_per_page = 9;
 $pages_quantity = ceil($lots_quantity/$lots_per_page);
-$cur_page_number = $_GET['page'] ?? 1;
-$cur_page_number = intval($cur_page_number);
+$cur_page_number = intval($_GET['page'] ?? 1);
 $offset = ($cur_page_number - 1) * $lots_per_page;
 
 //Получаем список лотов из БД для конкретной страницы

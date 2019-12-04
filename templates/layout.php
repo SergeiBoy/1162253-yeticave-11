@@ -48,7 +48,6 @@
 <footer class="main-footer">
     <nav class="nav">
         <ul class="nav__list container">
-            <!--заполните этот список из массива категорий-->
 		<?php foreach ($categories as $category): ?>
             <li class="nav__item <?php if ( isset($category['cur_category']) ): ?>nav__item--current<?php endif; ?>">
                 <a href="alllots.php?category_id=<?=$category['id'];?>"><?=$category['category_name'];?></a>

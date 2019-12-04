@@ -30,8 +30,7 @@ if (!empty($_GET['search'])) {
 		//Рассчитываем пагинацию
 		$lots_per_page = 9;
 		$pages_quantity = ceil($lots_quantity/$lots_per_page);
-		$cur_page_number = $_GET['page'] ?? 1;
-		$cur_page_number = intval($cur_page_number);
+		$cur_page_number = intval($_GET['page'] ?? 1);
 		$offset = ($cur_page_number - 1) * $lots_per_page;
 		
 		//Получаем список лотов из БД

@@ -26,7 +26,7 @@
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount"><?=htmlspecialchars($good['bid_price']);?></span>
-                            <span class="lot__cost"><?=set_price(htmlspecialchars($good['initial_price']));?></span>
+                            <span class="lot__cost"><?=set_price($good['initial_price']);?></span>
                         </div>
                         <div class="lot__timer timer <?php if ( get_time_remaining($good['dt_end'])[0] < 1 ): ?>timer--finishing<?php endif; ?>">
                             <?=implode(':', get_time_remaining($good['dt_end']) );?>

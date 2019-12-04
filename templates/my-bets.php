@@ -25,7 +25,7 @@
 			<div>
             <h3 class="rates__title"><a href="lot.php?id=<?=$good['id']; ?>"><?=htmlspecialchars($good['lot_name']);?></a></h3>
 			<?php if ( $good['is_win'] ): ?>
-			<p><?=$good['contact_info'].' '.$good['email']; ?></p>
+			<p><?=htmlspecialchars($good['contact_info'].' '.$good['email']); ?></p>
 			<?php endif; ?>
 			</div>
           </td>

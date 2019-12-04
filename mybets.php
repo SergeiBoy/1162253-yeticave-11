@@ -3,6 +3,7 @@
 require_once('helpers.php'); //Подключение вспомогательных функций
 require_once('startup.php'); //Подключение к БД и получение из нее категорий
 
+//Закрываем доступ для незалогиненных пользователей
 	if (!isset($_SESSION['user'])){
 	http_response_code(403);
 	exit();
@@ -30,7 +31,7 @@ foreach ($goods as &$good) {
 	if ( intval($_SESSION['user']['id']) === intval($good['user_id_winner']) ) {
 		$good['is_win'] = true;
 	}
-	if ( strtotime($good['dt_end']) <=  time() ) {
+	if ( strtotime($good['dt_end']) <  time() ) {
 		$good['is_ended'] = true;
 	}
 }

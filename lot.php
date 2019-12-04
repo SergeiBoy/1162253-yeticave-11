@@ -1,8 +1,8 @@
 <?php
 
 require_once('helpers.php'); //Подключение вспомогательных функций
-require_once('startup.php'); //Подключение к БД и получение из нее категорий
 require_once('data.php'); //Данные для валидации форм
+require_once('startup.php'); //Подключение к БД и получение из нее категорий
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET'){
@@ -10,8 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET'){
 		header("HTTP/1.0 404 Not Found");
 		exit();
 	} else {
-		$id = $_GET['id'] ?? '';
-		$id = intval($id);
+		$id = intval($_GET['id'] ?? 0);
 	}
 }
 
@@ -20,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 		http_response_code(403);
 		exit();
 	} else {
-		$id = $_SESSION['good_id'] ?? '';
+		$id = $_SESSION['good_id'] ?? 0;
 	}
 }
 
