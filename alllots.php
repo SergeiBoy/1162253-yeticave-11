@@ -6,23 +6,23 @@ require_once('startup.php'); //Подключение к БД и получен�
 $cur_category_id = intval($_GET['category_id'] ?? 1);
 
 foreach ($categories as &$category) {
-	if ( $cur_category_id === intval($category['id']) ) {
-		$category['cur_category'] = true;
-		break;
-	}
+    if ($cur_category_id === intval($category['id'])) {
+        $category['cur_category'] = true;
+        break;
+    }
 }
 
 //Получаем количество лотов
 $sql = "SELECT COUNT(*) as cnt FROM lots LEFT JOIN categories ON lots.category_id = categories.id
 WHERE dt_end > CURRENT_TIMESTAMP AND category_id = ?";
 
-$stmt = db_get_prepare_stmt($con, $sql, [$cur_category_id]); 
-mysqli_stmt_execute($stmt); 
+$stmt = db_get_prepare_stmt($con, $sql, [$cur_category_id]);
+mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
-	if (!$result) {
-		$error = mysqli_error($con);
-		print("Ошибка MySQL: " . $error); 
-		} 
+    if (!$result) {
+        $error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+    }
 $lots_quantity = mysqli_fetch_assoc($result)['cnt'];
 
 //Рассчитываем пагинацию
@@ -40,21 +40,24 @@ GROUP BY lots.id, lot_name, initial_price, img_path, category_name, category_id,
 ORDER BY lots.dt_add DESC
 LIMIT $lots_per_page OFFSET $offset";
 
-$stmt = db_get_prepare_stmt($con, $sql, [$cur_category_id]); 
-mysqli_stmt_execute($stmt); 
+$stmt = db_get_prepare_stmt($con, $sql, [$cur_category_id]);
+mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
-	if (!$result) {
-		$error = mysqli_error($con);
-		print("Ошибка MySQL: " . $error); 
-		} 
+    if (!$result) {
+        $error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+    }
 $goods = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
-$page_content = include_template('all-lots.php', 
-['categories' => $categories, 'goods' => $goods, 'cur_category_id' => $cur_category_id, 'pages_quantity' => $pages_quantity, 'cur_page_number' => $cur_page_number]);
+$page_content = include_template(
+    'all-lots.php',
+    ['categories' => $categories, 'goods' => $goods, 'cur_category_id' => $cur_category_id, 'pages_quantity' => $pages_quantity, 'cur_page_number' => $cur_page_number]
+);
 
-$layout_content = include_template('layout.php', 
-['content' => $page_content, 'categories' => $categories, 'title' => 'Все лоты', 'main_class' => '']);
+$layout_content = include_template(
+    'layout.php',
+    ['content' => $page_content, 'categories' => $categories, 'title' => 'Все лоты', 'main_class' => '']
+);
 
 print($layout_content);
-

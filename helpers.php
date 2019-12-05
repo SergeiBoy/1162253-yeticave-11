@@ -13,7 +13,8 @@
  *
  * @return bool true при совпадении с форматом 'ГГГГ-ММ-ДД', иначе false
  */
-function is_date_valid(string $date) : bool {
+function is_date_valid(string $date) : bool
+{
     $format_to_check = 'Y-m-d';
     $dateTimeObj = date_create_from_format($format_to_check, $date);
 
@@ -29,7 +30,8 @@ function is_date_valid(string $date) : bool {
  *
  * @return mysqli_stmt Подготовленное выражение
  */
-function db_get_prepare_stmt($link, $sql, $data = []) {
+function db_get_prepare_stmt($link, $sql, $data = [])
+{
     $stmt = mysqli_prepare($link, $sql);
 
     if ($stmt === false) {
@@ -46,11 +48,9 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
             if (is_int($value)) {
                 $type = 'i';
-            }
-            else if (is_string($value)) {
+            } elseif (is_string($value)) {
                 $type = 's';
-            }
-            else if (is_double($value)) {
+            } elseif (is_double($value)) {
                 $type = 'd';
             }
 
@@ -96,7 +96,7 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
  *
  * @return string Рассчитанная форма множественнго числа
  */
-function get_noun_plural_form (int $number, string $one, string $two, string $many): string
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
     $number = (int) $number;
     $mod10 = $number % 10;
@@ -126,7 +126,8 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = []) {
+function include_template($name, array $data = [])
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -150,8 +151,9 @@ function include_template($name, array $data = []) {
  *
  * @return string Цена, округленная до ближайшего большего целого, с добавлением символа рубля
  */
-function set_price($price) {
-	return number_format(ceil($price), 0, ',', ' ').' ₽';
+function set_price($price)
+{
+    return number_format(ceil($price), 0, ',', ' ').' ₽';
 }
 
 /**
@@ -161,11 +163,12 @@ function set_price($price) {
  *
  * @return array Остающиеся до $deadline_date часы и минуты
  */
-function get_time_remaining($deadline_date) {
-$time_remaining = strtotime($deadline_date) - time();
-$hours_remaining = str_pad(floor($time_remaining/3600), 2, "0", STR_PAD_LEFT);
-$minutes_remaining = str_pad(floor( ($time_remaining%3600)/60 ), 2, "0", STR_PAD_LEFT);
-return [$hours_remaining, $minutes_remaining];
+function get_time_remaining($deadline_date)
+{
+    $time_remaining = strtotime($deadline_date) - time();
+    $hours_remaining = str_pad(floor($time_remaining/3600), 2, "0", STR_PAD_LEFT);
+    $minutes_remaining = str_pad(floor(($time_remaining%3600)/60), 2, "0", STR_PAD_LEFT);
+    return [$hours_remaining, $minutes_remaining];
 }
 
 /**
@@ -176,37 +179,36 @@ return [$hours_remaining, $minutes_remaining];
  * @return string Если прошло меньше 24 часов, то строка, например "5 часов 18 минут назад",
  *                иначе возвращает NULL
  */
-function get_time_since_adding($dt_add) {
-$time_since = time() - strtotime($dt_add);
-$H = floor($time_since/3600);
-$M = floor( ($time_since%3600)/60 );
-	if ($H < 24) {
-		if ( $H%20 >= 2 && $H%20 <= 4) {
-			$HF = 'часа';
-		} else if ( $H%20 == 1) {
-			$HF = 'час';
-		} else {
-			$HF = 'часов';
-		}
-			
-		if ( $M%100 >= 11 && $M%100 <= 20 ) {
-			$MF = 'минут';
-		} else if ($M%10 > 5) {
-			$MF = 'минут';
-		} else if ($M%10 === 1) {
-			$MF = 'минута';
-		} else if ($M%10 >= 2 && $M%10 <= 4) {
-			$MF = 'минуты';
-		} else {
-			$MF = 'минут';
-		}
-		
-		return ("$H $HF $M $MF назад");	
-		
-	}
-	
-	return NULL;
-	
+function get_time_since_adding($dt_add)
+{
+    $time_since = time() - strtotime($dt_add);
+    $H = floor($time_since/3600);
+    $M = floor(($time_since%3600)/60);
+    if ($H < 24) {
+        if ($H%20 >= 2 && $H%20 <= 4) {
+            $HF = 'часа';
+        } elseif ($H%20 == 1) {
+            $HF = 'час';
+        } else {
+            $HF = 'часов';
+        }
+            
+        if ($M%100 >= 11 && $M%100 <= 20) {
+            $MF = 'минут';
+        } elseif ($M%10 > 5) {
+            $MF = 'минут';
+        } elseif ($M%10 === 1) {
+            $MF = 'минута';
+        } elseif ($M%10 >= 2 && $M%10 <= 4) {
+            $MF = 'минуты';
+        } else {
+            $MF = 'минут';
+        }
+        
+        return ("$H $HF $M $MF назад");
+    }
+    
+    return null;
 }
 
 /**
@@ -216,8 +218,9 @@ $M = floor( ($time_since%3600)/60 );
  *
  * @return bool true, если является, иначе false
  */
-function is_positive_number($num){
-	return (filter_var($num, FILTER_VALIDATE_FLOAT) && filter_var($num, FILTER_VALIDATE_FLOAT)>0);
+function is_positive_number($num)
+{
+    return (filter_var($num, FILTER_VALIDATE_FLOAT) && filter_var($num, FILTER_VALIDATE_FLOAT)>0);
 }
 
 /**
@@ -227,8 +230,9 @@ function is_positive_number($num){
  *
  * @return bool true, если является, иначе false
  */
-function is_positive_integer($num){
-	return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
+function is_positive_integer($num)
+{
+    return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
 }
 
 /**
@@ -238,24 +242,24 @@ function is_positive_integer($num){
  * @param string $email email пользователя
  * @param string $pasword Пароль пользователя
  *
- * @return array с данными пользователя, если является, иначе bool false
+ * @return array с данными пользователя, если email и пароль правильные, иначе bool false
  */
-function is_pass($con, $email, $password){
-	$sql = "SELECT id, user_name, password FROM users WHERE email = ?";
-	$stmt = db_get_prepare_stmt($con, $sql, [$email]); 
-	mysqli_stmt_execute($stmt); 
-	$result = mysqli_stmt_get_result($stmt); 
-		if (!$result) {
-			$error = mysqli_error($con);
-			print("Ошибка MySQL: " . $error); 
-		}
-	$user = mysqli_fetch_assoc($result);
-		if (!$user) {
-			$user = false;
-		} else if (!password_verify($password, $user['password'])) {
-			$user = false;
-		}
+function is_pass($con, $email, $password)
+{
+    $sql = "SELECT id, user_name, password FROM users WHERE email = ?";
+    $stmt = db_get_prepare_stmt($con, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if (!$result) {
+        $error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+    }
+    $user = mysqli_fetch_assoc($result);
+    if (!$user) {
+        $user = false;
+    } elseif (!password_verify($password, $user['password'])) {
+        $user = false;
+    }
 
-	return $user;
+    return $user;
 }
-

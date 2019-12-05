@@ -19,8 +19,8 @@
         </div>
         <div class="lot-item__right">
           <div class="lot-item__state">
-            <div class="lot-item__timer timer <?php if ( get_time_remaining($lot['dt_end'])[0] < 1 ): ?>timer--finishing<?php endif; ?>">
-              <?=implode(':', get_time_remaining($lot['dt_end']) );?>
+            <div class="lot-item__timer timer <?php if (get_time_remaining($lot['dt_end'])[0] < 1): ?>timer--finishing<?php endif; ?>">
+              <?=implode(':', get_time_remaining($lot['dt_end']));?>
             </div>
             <div class="lot-item__cost-state">
               <div class="lot-item__rate">
@@ -49,8 +49,8 @@
             <table class="history__list">
               <?php foreach ($history as $history_bid): ?>
 			  <tr class="history__item">
-                <td class="history__name"><?= htmlspecialchars($history_bid['user_name'] ?? '');?></td>
-                <td class="history__price"><?= htmlspecialchars($history_bid['bid_price'] ?? '');?> р</td>
+                <td class="history__name"><?=htmlspecialchars($history_bid['user_name']);?></td>
+                <td class="history__price"><?=$history_bid['bid_price'];?> р</td>
                 <td class="history__time"><?= get_time_since_adding($history_bid['dt_add']) ?? implode(' в ', explode(' ', $history_bid['dt_add_format']));?></td>
               </tr>
 			  <?php endforeach; ?>

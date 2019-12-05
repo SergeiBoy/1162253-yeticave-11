@@ -12,18 +12,21 @@ WHERE dt_end > CURRENT_TIMESTAMP
 GROUP BY lots.id, lot_name, initial_price, img_path, category_name, dt_add, dt_end 
 ORDER BY lots.dt_add DESC";
 $result = mysqli_query($con, $sql);
-	if (!$result) {
-	$error = mysqli_error($con);
-	print("Ошибка MySQL: " . $error); 
-	} 
+    if (!$result) {
+        $error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+    }
 $goods = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 
-$page_content = include_template('main.php', 
-['categories' => $categories, 'goods' => $goods]);
+$page_content = include_template(
+    'main.php',
+    ['categories' => $categories, 'goods' => $goods]
+);
 
-$layout_content = include_template('layout.php', 
-['content' => $page_content, 'categories' => $categories, 'title' => 'Главная', 'main_class' => 'container']);
+$layout_content = include_template(
+    'layout.php',
+    ['content' => $page_content, 'categories' => $categories, 'title' => 'Главная', 'main_class' => 'container']
+);
 
 print($layout_content);
-

@@ -20,7 +20,11 @@
           <select id="category" name="category">
             <option>Выберите категорию</option>
 		<?php foreach ($categories as $category): ?>
-            <option <?php if (isset($_POST['category'])){if ($_POST['category'] === $category['category_name']) {echo ('selected');}}; ?>><?=$category['category_name'];?></option>
+            <option <?php if (isset($_POST['category'])) {
+    if ($_POST['category'] === $category['category_name']) {
+        echo('selected');
+    }
+}; ?>><?=$category['category_name'];?></option>
 		<?php endforeach; ?>
           </select>
           <span class="form__error"><?= $errors['category'] ?? '';?></span>

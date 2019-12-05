@@ -4,10 +4,10 @@ require_once('helpers.php'); //Подключение вспомогательн
 require_once('startup.php'); //Подключение к БД и получение из нее категорий
 
 //Закрываем доступ для незалогиненных пользователей
-	if (!isset($_SESSION['user'])){
-	http_response_code(403);
-	exit();
-	}
+    if (!isset($_SESSION['user']['id'])) {
+        http_response_code(403);
+        exit();
+    }
 
 //Получаем список ставок
 $sql = "SELECT lots.id, lot_name, img_path, category_name, MAX(bid_price) AS bid_price, 
@@ -19,28 +19,31 @@ WHERE bids.user_id = '".$_SESSION['user']['id'].
 "' GROUP BY lots.id, lot_name, img_path, category_name, dt_end, email, contact_info
 ORDER BY dt_end DESC";
 $result = mysqli_query($con, $sql);
-	if (!$result) {
-	$error = mysqli_error($con);
-	print("Ошибка MySQL: " . $error); 
-	} 
+    if (!$result) {
+        $error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+    }
 $goods = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 foreach ($goods as &$good) {
-	$good['is_win'] = false;
-	$good['is_ended'] = false;
-	if ( intval($_SESSION['user']['id']) === intval($good['user_id_winner']) ) {
-		$good['is_win'] = true;
-	}
-	if ( strtotime($good['dt_end']) <  time() ) {
-		$good['is_ended'] = true;
-	}
+    $good['is_win'] = false;
+    $good['is_ended'] = false;
+    if (intval($_SESSION['user']['id']) === intval($good['user_id_winner'])) {
+        $good['is_win'] = true;
+    }
+    if (strtotime($good['dt_end']) <  time()) {
+        $good['is_ended'] = true;
+    }
 }
 
-$page_content = include_template('my-bets.php', 
-['categories' => $categories, 'goods' => $goods]);
+$page_content = include_template(
+    'my-bets.php',
+    ['categories' => $categories, 'goods' => $goods]
+);
 
-$layout_content = include_template('layout.php', 
-['content' => $page_content, 'categories' => $categories, 'title' => 'Мои ставки', 'main_class' => '']);
+$layout_content = include_template(
+    'layout.php',
+    ['content' => $page_content, 'categories' => $categories, 'title' => 'Мои ставки', 'main_class' => '']
+);
 
 print($layout_content);
-

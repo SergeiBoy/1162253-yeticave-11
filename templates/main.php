@@ -21,15 +21,15 @@
                     <img src="<?=htmlspecialchars($good['img_path']);?>" width="350" height="260" alt="<?=htmlspecialchars($good['lot_name']);?>">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?=($good['category_name']);?></span>
+                    <span class="lot__category"><?=$good['category_name'];?></span>
                     <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$good['id'];?>"><?=htmlspecialchars($good['lot_name']);?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
-                            <span class="lot__amount"><?=htmlspecialchars($good['bid_price']);?></span>
+                            <span class="lot__amount"><?=$good['bid_price'];?></span>
                             <span class="lot__cost"><?=set_price($good['initial_price']);?></span>
                         </div>
-                        <div class="lot__timer timer <?php if ( get_time_remaining($good['dt_end'])[0] < 1 ): ?>timer--finishing<?php endif; ?>">
-                            <?=implode(':', get_time_remaining($good['dt_end']) );?>
+                        <div class="lot__timer timer <?php if (get_time_remaining($good['dt_end'])[0] < 1): ?>timer--finishing<?php endif; ?>">
+                            <?=implode(':', get_time_remaining($good['dt_end']));?>
 						</div>
                     </div>
                 </div>
