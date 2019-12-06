@@ -151,7 +151,7 @@ function include_template($name, array $data = [])
  *
  * @return string Цена, округленная до ближайшего большего целого, с добавлением символа рубля
  */
-function set_price($price)
+function format_price($price)
 {
     return number_format(ceil($price), 0, ',', ' ').' ₽';
 }
@@ -244,7 +244,7 @@ function is_positive_integer($num)
  *
  * @return array с данными пользователя, если email и пароль правильные, иначе bool false
  */
-function is_pass($con, $email, $password)
+function can_user_login($con, $email, $password)
 {
     $sql = "SELECT id, user_name, password FROM users WHERE email = ?";
     $stmt = db_get_prepare_stmt($con, $sql, [$email]);

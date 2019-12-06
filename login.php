@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     //Аутентификация
     if (!count($errors)) {
-        $user = is_pass($con, $_POST['email'], $_POST['password']);
+        $user = can_user_login($con, $_POST['email'], $_POST['password']);
         if (!$user) {
             $errors['email_password'] = $messages['wrong_password_email'];
         } else {

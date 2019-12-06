@@ -2,7 +2,7 @@
 	<nav class="nav">
       <ul class="nav__list container">
 		<?php foreach ($categories as $category): ?>
-        <li class="nav__item <?php if (isset($category['cur_category'])): {$category_name = $category['category_name'];} ?>nav__item--current<?php endif; ?>">
+        <li class="nav__item <?php if (isset($category['current_category'])): {$category_name = $category['category_name'];} ?>nav__item--current<?php endif; ?>">
           <a href="alllots.php?category_id=<?=$category['id'];?>"><?=$category['category_name'];?></a>
         </li>
 		<?php endforeach; ?>
@@ -38,15 +38,15 @@
 	  <?php if ($pages_quantity > 1): ?>
       <ul class="pagination-list">
         <li class="pagination-item pagination-item-prev">
-			<a <?php if ($cur_page_number > 1): ?>href="alllots.php?category_id=<?=$cur_category_id;?>&page=<?= ($cur_page_number - 1);?>"<?php endif; ?>>Назад</a>
+			<a <?php if ($current_page_number > 1): ?>href="alllots.php?category_id=<?=$current_category_id;?>&page=<?= ($current_page_number - 1);?>"<?php endif; ?>>Назад</a>
 		</li>
 		<?php for ($i = 1; $i <= $pages_quantity; $i++): ?>
-        <li class="pagination-item <?php if ($cur_page_number === $i): ?>pagination-item-active<?php endif; ?>">
-			<a <?php if ($cur_page_number !== $i): ?>href="alllots.php?category_id=<?=$cur_category_id;?>&page=<?=$i;?>"<?php endif; ?>><?=$i;?></a>
+        <li class="pagination-item <?php if ($current_page_number === $i): ?>pagination-item-active<?php endif; ?>">
+			<a <?php if ($current_page_number !== $i): ?>href="alllots.php?category_id=<?=$current_category_id;?>&page=<?=$i;?>"<?php endif; ?>><?=$i;?></a>
 		</li>
 		<?php endfor; ?>
         <li class="pagination-item pagination-item-next">
-			<a <?php if ($cur_page_number < $pages_quantity): ?>href="alllots.php?category_id=<?=$cur_category_id;?>&page=<?= ($cur_page_number + 1);?>"<?php endif; ?>>Вперед</a>
+			<a <?php if ($current_page_number < $pages_quantity): ?>href="alllots.php?category_id=<?=$current_category_id;?>&page=<?= ($current_page_number + 1);?>"<?php endif; ?>>Вперед</a>
 		</li>
       </ul>
 	  <?php endif; ?>

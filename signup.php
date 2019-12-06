@@ -25,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     //Проверяем email
     $email = $_POST['email'] ?? '';
-    if ($msg = is_not_valid_email($messages, $con, $email)) {
-        $errors['email'] = $msg;
+    if ($email_error_message = is_not_valid_email($messages, $con, $email)) {
+        $errors['email'] = $email_error_message;
     }
     //Если ошибок нет - добавляем пользователя в БД
     if (!count($errors)) {

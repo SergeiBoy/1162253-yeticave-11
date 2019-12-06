@@ -4,6 +4,7 @@ require_once('helpers.php'); //Подключение вспомогательн
 require_once('data.php'); //Данные для валидации форм
 require_once('startup.php'); //Подключение к БД и получение из нее категорий
 
+$id = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!isset($_GET['id'])) {

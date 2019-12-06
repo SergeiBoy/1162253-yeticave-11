@@ -5,7 +5,7 @@ require_once('startup.php'); //Подключение к БД и получен�
 
 $goods_search = [];
 $pages_quantity = 0;
-$cur_page_number = 1;
+$current_page_number = 1;
 $search = '';
 
 
@@ -13,7 +13,7 @@ if (!empty($_GET['search'])) {
     $search = trim($_GET['search']);
     
     if ($search !== '') {
-        $sql = "SELECT COUNT(*) as cnt FROM lots
+        $sql = "SELECT COUNT(*) as count FROM lots
 		WHERE MATCH(lot_name,description) AGAINST(?) AND dt_end > CURRENT_TIMESTAMP";
         
         $stmt = db_get_prepare_stmt($con, $sql, [$search]);
@@ -23,13 +23,13 @@ if (!empty($_GET['search'])) {
             $error = mysqli_error($con);
             print("Ошибка MySQL: " . $error);
         }
-        $lots_quantity = mysqli_fetch_assoc($result)['cnt'];
+        $lots_quantity = mysqli_fetch_assoc($result)['count'];
         
         //Рассчитываем пагинацию
         $lots_per_page = 9;
         $pages_quantity = ceil($lots_quantity/$lots_per_page);
-        $cur_page_number = intval($_GET['page'] ?? 1);
-        $offset = ($cur_page_number - 1) * $lots_per_page;
+        $current_page_number = intval($_GET['page'] ?? 1);
+        $offset = ($current_page_number - 1) * $lots_per_page;
         
         //Получаем список лотов из БД
         $sql = "SELECT lots.id, lot_name, initial_price, img_path, MAX(bid_price) AS bid_price, category_name, lots.dt_add, dt_end 
@@ -53,7 +53,7 @@ if (!empty($_GET['search'])) {
 
 $page_content = include_template(
     'search.php',
-    ['categories' => $categories, 'goods' => $goods_search, 'pages_quantity' => $pages_quantity, 'cur_page_number' => $cur_page_number, 'search' => $search]
+    ['categories' => $categories, 'goods' => $goods_search, 'pages_quantity' => $pages_quantity, 'current_page_number' => $current_page_number, 'search' => $search]
 );
 
 $layout_content = include_template(
