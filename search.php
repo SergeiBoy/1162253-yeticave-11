@@ -35,7 +35,7 @@ if (!empty($_GET['search'])) {
         $sql = "SELECT lots.id, lot_name, initial_price, img_path, MAX(bid_price) AS bid_price, category_name, lots.dt_add, dt_end 
 		FROM lots LEFT JOIN categories ON lots.category_id = categories.id
 		LEFT JOIN bids ON lots.id = bids.lot_id
-		WHERE MATCH(lot_name,description) AGAINST(?) AND dt_end > CURRENT_TIMESTAMP
+		WHERE MATCH(lot_name, description) AGAINST(?) AND dt_end > CURRENT_TIMESTAMP
 		GROUP BY lots.id, lot_name, initial_price, img_path, category_name, dt_add, dt_end 
 		ORDER BY lots.dt_add DESC
 		LIMIT $lots_per_page OFFSET $offset";

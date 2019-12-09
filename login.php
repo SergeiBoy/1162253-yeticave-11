@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[$field] = $messages['fill_it'];
         }
     }
+	
     //Аутентификация
     if (!count($errors)) {
         $user = can_user_login($con, $_POST['email'], $_POST['password']);
@@ -26,16 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user'] = $user;
         }
     }
+	
     //Если ошибок нет
     if (!count($errors)) {
         //Делаем переадресацию на главную страницу
         header("Location: index.php");
         exit();
-            
-    //Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
-    } else {
-        $errors['check'] = false;
-    }
+    }        
+    
+	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
+    $errors['check'] = false;
+	
 }
 
 

@@ -14,7 +14,8 @@ $lots_time_ended = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $winners = [];
 $winners_id = [];
 foreach ($lots_time_ended as $lot) {
-    //Находим победителя
+    
+	//Находим победителя
     $sql = "SELECT users.id, user_name, email FROM bids LEFT JOIN users ON bids.user_id = users.id
 	WHERE bids.lot_id = '".$lot['id']."'
 	ORDER BY bid_price DESC";
@@ -34,6 +35,7 @@ foreach ($lots_time_ended as $lot) {
             $error = mysqli_error($con);
             print("Ошибка MySQL: " . $error);
         }
+		
         //Формируем массив победителей с выигранными ими лотами
         if (!in_array($winner['id'], $winners_id)) {
             $winners_id[] = $winner['id'];

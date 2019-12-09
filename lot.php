@@ -7,21 +7,25 @@ require_once('startup.php'); //Подключение к БД и получен�
 $id = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (!isset($_GET['id'])) {
+    
+	if (!isset($_GET['id'])) {
         header("HTTP/1.0 404 Not Found");
         exit();
-    } else {
-        $id = intval($_GET['id']);
     }
+	
+    $id = intval($_GET['id']);
+    
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!isset($_SESSION['user']['id'])) {
+    
+	if (!isset($_SESSION['user']['id'])) {
         http_response_code(403);
         exit();
-    } else {
-        $id = $_SESSION['good_id'] ?? 0;
     }
+	
+    $id = $_SESSION['good_id'] ?? 0;
+    
 }
 
 //Получаем лот из БД
@@ -73,11 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Делаем переадресацию на эту же страницу методом GET
         header("Location: lot.php?id=$id");
         exit();
-            
-    //Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
-    } else {
-        $errors['check'] = false;
-    }
+    }       
+    
+	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
+    $errors['check'] = false;
+	
 }
 
 //Получаем историю ставок

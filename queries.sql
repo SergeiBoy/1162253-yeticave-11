@@ -20,17 +20,17 @@ VALUES ('2018-10-15', 'ivan@gmail.com', 'Иван', '5678', 'Тел. 256-17-34')
 
 /* Добавляем существующий список объявлений */
 INSERT INTO lots (dt_add, lot_name, img_path, initial_price, dt_end, bid_step, user_id_author, category_id) 
-VALUES ('2019-10-25', '2014 Rossignol District Snowboard', 'img/lot-1.jpg', 10999, '2019-11-25', 100, 1, 1);
+VALUES ('2019-10-25', '2014 Rossignol District Snowboard', 'img/lot-1.jpg', 10999, '2019-12-25', 100, 1, 1);
 INSERT INTO lots (dt_add, lot_name, img_path, initial_price, dt_end, bid_step, user_id_author, category_id) 
-VALUES ('2019-10-20', 'DC Ply Mens 2016/2017 Snowboard', 'img/lot-2.jpg', 159999, '2019-11-01', 200, 2, 1);
+VALUES ('2019-10-20', 'DC Ply Mens 2016/2017 Snowboard', 'img/lot-2.jpg', 159999, '2019-12-28', 200, 2, 1);
 INSERT INTO lots (dt_add, lot_name, img_path, initial_price, dt_end, bid_step, user_id_author, category_id) 
-VALUES ('2019-10-30', 'Крепления Union Contact Pro 2015 года размер L/XL', 'img/lot-3.jpg', 8000, '2019-12-10', 100, 2, 2);
+VALUES ('2019-10-30', 'Крепления Union Contact Pro 2015 года размер L/XL', 'img/lot-3.jpg', 8000, '2019-12-30', 100, 2, 2);
 INSERT INTO lots (dt_add, lot_name, img_path, initial_price, dt_end, bid_step, user_id_author, category_id) 
-VALUES ('2019-11-01', 'Ботинки для сноуборда DC Mutiny Charocal', 'img/lot-4.jpg', 10999, '2019-12-01', 100, 1, 3);
+VALUES ('2019-11-01', 'Ботинки для сноуборда DC Mutiny Charocal', 'img/lot-4.jpg', 10999, '2019-12-29', 100, 1, 3);
 INSERT INTO lots (dt_add, lot_name, img_path, initial_price, dt_end, bid_step, user_id_author, category_id) 
-VALUES ('2019-10-01', 'Куртка для сноуборда DC Mutiny Charocal', 'img/lot-5.jpg', 7500, '2019-12-05', 50, 2, 4);
+VALUES ('2019-10-01', 'Куртка для сноуборда DC Mutiny Charocal', 'img/lot-5.jpg', 7500, '2019-12-30', 50, 2, 4);
 INSERT INTO lots (dt_add, lot_name, img_path, initial_price, dt_end, bid_step, user_id_author, category_id) 
-VALUES ('2019-10-15', 'Маска Oakley Canopy', 'img/lot-6.jpg', 5400, '2019-12-12', 10, 1, 6);
+VALUES ('2019-10-15', 'Маска Oakley Canopy', 'img/lot-6.jpg', 5400, '2019-12-30', 10, 1, 6);
 
 /* Добавляем пару ставок для любого объявления */
 INSERT INTO bids (bid_price, user_id, lot_id) 

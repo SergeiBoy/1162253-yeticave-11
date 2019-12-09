@@ -3,11 +3,13 @@ DEFAULT CHARACTER SET utf8
 DEFAULT COLLATE utf8_general_ci;
 USE yeticave;
 
+
 CREATE TABLE categories (
 id				INT AUTO_INCREMENT PRIMARY KEY,
 category_name	VARCHAR(128) NOT NULL UNIQUE,
 symbol_code		VARCHAR(128) NOT NULL UNIQUE
 );
+
 
 CREATE TABLE lots (
 id				INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,6 +26,16 @@ user_id_winner	INT,
 category_id		INT
 );
 
+CREATE INDEX IX_Lots_InitialPrice ON lots(initial_price);
+CREATE INDEX IX_Lots_UserIdAuthor ON lots(user_id_author);
+CREATE INDEX IX_Lots_UserIdWinner ON lots(user_id_winner);
+CREATE INDEX IX_Lots_CategoryId ON lots(category_id);
+CREATE FULLTEXT INDEX FX_Lots_Name_Description ON lots(lot_name, description);
+ALTER TABLE lots ADD CONSTRAINT FK_Lots_Users_UserIdAuthor FOREIGN KEY (user_id_author) REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE lots ADD CONSTRAINT FK_Lots_Users_UserIdWinner FOREIGN KEY (user_id_winner) REFERENCES users(id);
+ALTER TABLE lots ADD CONSTRAINT FK_Lots_Categories_CategoryId FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE;
+
+
 CREATE TABLE bids (
 id				INT AUTO_INCREMENT PRIMARY KEY,
 dt_add			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -32,6 +44,14 @@ bid_price		DECIMAL,
 user_id			INT NOT NULL,
 lot_id			INT NOT NULL
 );
+
+CREATE INDEX IX_Bids_DtAdd ON bids(dt_add);
+CREATE INDEX IX_Bids_BidPrice ON bids(bid_price);
+CREATE INDEX IX_Bids_UserId ON bids(user_id);
+CREATE INDEX IX_Bids_LotId ON bids(lot_id);
+ALTER TABLE bids ADD CONSTRAINT FK_Bids_Users_UserId FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE bids ADD CONSTRAINT FK_Bids_Lots_LotId FOREIGN KEY (lot_id) REFERENCES lots(id) ON DELETE CASCADE;
+
 
 CREATE TABLE users (
 id				INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,21 +62,5 @@ password		CHAR(64) NOT NULL,
 contact_info	TEXT
 );
 
-CREATE INDEX dt_add ON lots(dt_add);
-CREATE INDEX lot_name ON lots(lot_name);
-CREATE INDEX initial_price ON lots(initial_price);
-CREATE INDEX dt_end ON lots(dt_end);
-CREATE INDEX user_id_author ON lots(user_id_author);
-CREATE INDEX user_id_winner ON lots(user_id_winner);
-CREATE INDEX category_id ON lots(category_id);
-
-CREATE INDEX dt_add ON bids(dt_add);
-CREATE INDEX bid_price ON bids(bid_price);
-CREATE INDEX user_id ON bids(user_id);
-CREATE INDEX lot_id ON bids(lot_id);
-
-CREATE INDEX dt_reg ON users(dt_reg);
-
-CREATE FULLTEXT INDEX lot_ft_search ON lots(lot_name, description)
 
 
