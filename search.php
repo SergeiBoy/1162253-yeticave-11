@@ -15,16 +15,9 @@ if (!empty($_GET['search'])) {
     if ($search !== '') {
         $sql = "SELECT COUNT(*) as count FROM lots
 		WHERE MATCH(lot_name,description) AGAINST(?) AND dt_end > CURRENT_TIMESTAMP";
-        
-        $stmt = db_get_prepare_stmt($con, $sql, [$search]);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        if (!$result) {
-            $error = mysqli_error($con);
-            print("Ошибка MySQL: " . $error);
-        }
-        $lots_quantity = mysqli_fetch_assoc($result)['count'];
-        
+        $lots_quantity = db_fetch_data($con, $sql, [$search]);
+		$lots_quantity = $lots_quantity[0]['count'] ?? 0;
+		
         //Рассчитываем пагинацию
         $lots_per_page = 9;
         $pages_quantity = ceil($lots_quantity/$lots_per_page);
@@ -39,15 +32,7 @@ if (!empty($_GET['search'])) {
 		GROUP BY lots.id, lot_name, initial_price, img_path, category_name, dt_add, dt_end 
 		ORDER BY lots.dt_add DESC
 		LIMIT $lots_per_page OFFSET $offset";
-        
-        $stmt = db_get_prepare_stmt($con, $sql, [$search]);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        if (!$result) {
-            $error = mysqli_error($con);
-            print("Ошибка MySQL: " . $error);
-        }
-        $goods_search = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $goods_search = db_fetch_data($con, $sql, [$search]);
     }
 }
 

@@ -64,21 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Записываем лот в БД
         $sql = "INSERT INTO lots (dt_add, lot_name, category_id, description, img_path, initial_price, bid_step, dt_end, user_id_author) 
 				VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['user']['id']]);
-        $result = mysqli_stmt_execute($stmt);
-        if (!$result) {
-            $error = mysqli_error($con);
-            print("Ошибка MySQL: " . $error);
-        } else {
-            //Делаем переадресацию на просмотр добавленного лота
-            $last_id = mysqli_insert_id($con);
-            header("Location: lot.php?id=$last_id");
-            exit();
-        }
-        //Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
-    } else {
-        $errors['check'] = false;
-    }
+        $last_id = db_insert_data($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['user']['id']]);
+		if ($last_id) {
+			header("Location: lot.php?id=$last_id");
+			exit();
+		}
+    } 
+	
+	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
+    $errors['check'] = false;
 }
 
 

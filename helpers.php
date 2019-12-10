@@ -75,6 +75,51 @@ function db_get_prepare_stmt($link, $sql, $data = [])
 }
 
 /**
+ * Получает записи из БД (SELECT) методом подготовленного выражения 
+ * на основе готового SQL запроса и переданных данных
+ *
+ * @param $con mysqli Ресурс соединения
+ * @param $sql string SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
+ *
+ * @return array $result Массив данных в случае успеха, при ошибке mysql - bool false и выдает сообщение о ней
+ */
+function db_fetch_data($con, $sql, $data = []) {
+	$stmt = db_get_prepare_stmt($con, $sql, $data);
+	mysqli_stmt_execute($stmt);
+	$result = mysqli_stmt_get_result($stmt);
+	if ($result === false) {
+		$error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+	} else {
+		$result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+	}
+	return $result;
+}
+
+/**
+ * Добавляет новую запись в БД методом подготовленного выражения 
+ * на основе готового SQL запроса и переданных данных
+ *
+ * @param $con mysqli Ресурс соединения
+ * @param $sql string SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
+ *
+ * @return string $result id последней вставленной строки в случае успеха, при ошибке mysql - bool false и выдает сообщение о ней
+ */
+function db_insert_data($con, $sql, $data = []) {
+	$stmt = db_get_prepare_stmt($con, $sql, $data);
+	$result = mysqli_stmt_execute($stmt);
+	if (!$result) {
+		$error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+	} else {
+		$result = mysqli_insert_id($con);
+	}
+	return $result;
+}
+
+/**
  * Возвращает корректную форму множественного числа
  * Ограничения: только для целых чисел
  *

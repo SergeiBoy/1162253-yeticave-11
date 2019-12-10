@@ -6,26 +6,20 @@ require_once('startup.php'); //Подключение к БД и получен�
 
 $id = 0;
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {    
 	if (!isset($_GET['id'])) {
         header("HTTP/1.0 404 Not Found");
         exit();
     }
-	
     $id = intval($_GET['id']);
-    
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
 	if (!isset($_SESSION['user']['id'])) {
         http_response_code(403);
         exit();
-    }
-	
-    $id = $_SESSION['good_id'] ?? 0;
-    
+    }	
+    $id = $_SESSION['good_id'] ?? 0;    
 }
 
 //Получаем лот из БД
@@ -34,23 +28,14 @@ LEFT JOIN categories ON lots.category_id = categories.id
 LEFT JOIN bids ON lots.id = bids.lot_id
 WHERE lots.id = ?
 GROUP BY lots.id, lot_name, description, img_path, dt_end, initial_price, bid_step, category_name, user_id_author";
-
-$stmt = db_get_prepare_stmt($con, $sql, [$id]);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-    if (!$result) {
-        $error = mysqli_error($con);
-        print("Ошибка MySQL: " . $error);
-    }
-$lot = mysqli_fetch_assoc($result);
-
-    if (!$lot['id']) {
-        header("HTTP/1.0 404 Not Found");
-        exit();
-    }
+$lot = db_fetch_data($con, $sql, [$id]);
+if (!isset($lot[0])) {
+	header("HTTP/1.0 404 Not Found");
+    exit();
+}
+$lot = $lot[0];
 
 $_SESSION['good_id'] = intval($lot['id']);
-
 
 //Создаем массив ошибок
 $errors = [];
@@ -68,20 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!count($errors)) {
         $sql = "INSERT INTO bids (dt_add, bid_price, user_id, lot_id) 
 				VALUES (NOW(), ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($con, $sql, [$cost, $_SESSION['user']['id'], $id]);
-        $result = mysqli_stmt_execute($stmt);
-        if (!$result) {
-            $error = mysqli_error($con);
-            print("Ошибка MySQL: " . $error);
-        }
-        //Делаем переадресацию на эту же страницу методом GET
+        db_insert_data($con, $sql, [$cost, $_SESSION['user']['id'], $id]);
+		//Делаем переадресацию на эту же страницу методом GET
         header("Location: lot.php?id=$id");
         exit();
     }       
     
 	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
     $errors['check'] = false;
-	
 }
 
 //Получаем историю ставок
@@ -89,15 +68,7 @@ $sql = "SELECT dt_add, DATE_FORMAT(dt_add, '%d.%m.%y %H:%i') AS dt_add_format, b
 LEFT JOIN users ON bids.user_id = users.id
 WHERE lot_id = ?
 ORDER BY bid_price DESC";
-
-$stmt = db_get_prepare_stmt($con, $sql, [$id]);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-    if (!$result) {
-        $error = mysqli_error($con);
-        print("Ошибка MySQL: " . $error);
-    }
-$history = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$history = db_fetch_data($con, $sql, [$id]);
 
 //Логика показа блока добавления ставок
 $is_bidding_show = true;

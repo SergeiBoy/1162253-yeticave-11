@@ -33,12 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         add_user($con, $_POST['password'], $_POST['email'], $_POST['name'], $_POST['message']);
         //Делаем переадресацию на форму входа
         header("Location: login.php");
-        exit();
-            
-    //Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
-    } else {
-        $errors['check'] = false;
+        exit();        
     }
+	
+	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
+    $errors['check'] = false;
 }
 
 
