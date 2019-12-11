@@ -11,12 +11,7 @@ LEFT JOIN bids ON lots.id = bids.lot_id
 WHERE dt_end > CURRENT_TIMESTAMP
 GROUP BY lots.id, lot_name, initial_price, img_path, category_name, dt_add, dt_end 
 ORDER BY lots.dt_add DESC";
-$result = mysqli_query($con, $sql);
-    if (!$result) {
-        $error = mysqli_error($con);
-        print("Ошибка MySQL: " . $error);
-    }
-$goods = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$goods = db_fetch_data($con, $sql);
 
 
 $page_content = include_template(

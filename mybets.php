@@ -18,12 +18,7 @@ LEFT JOIN users ON lots.user_id_author = users.id
 WHERE bids.user_id = '".$_SESSION['user']['id'].
 "' GROUP BY lots.id, lot_name, img_path, category_name, dt_end, email, contact_info
 ORDER BY dt_end DESC";
-$result = mysqli_query($con, $sql);
-    if (!$result) {
-        $error = mysqli_error($con);
-        print("Ошибка MySQL: " . $error);
-    }
-$goods = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$goods = db_fetch_data($con, $sql);
 
 foreach ($goods as &$good) {
     $good['is_win'] = false;

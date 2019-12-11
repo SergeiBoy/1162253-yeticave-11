@@ -295,7 +295,7 @@ function can_user_login($con, $email, $password)
     $stmt = db_get_prepare_stmt($con, $sql, [$email]);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    if (!$result) {
+    if ($result === false) {
         $error = mysqli_error($con);
         print("Ошибка MySQL: " . $error);
     }

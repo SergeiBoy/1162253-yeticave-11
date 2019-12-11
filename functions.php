@@ -21,7 +21,7 @@ function is_not_valid_email($messages, $con, $email)
         $stmt = db_get_prepare_stmt($con, $sql, [$email]);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        if (!$result) {
+        if ($result === false) {
             $error = mysqli_error($con);
             print("Ошибка MySQL: " . $error);
             $msg = $messages['fill_it'];
