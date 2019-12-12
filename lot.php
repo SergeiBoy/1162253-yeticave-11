@@ -6,20 +6,20 @@ require_once('startup.php'); //Подключение к БД и получен�
 
 $id = 0;
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {    
-	if (!isset($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (!isset($_GET['id'])) {
         header("HTTP/1.0 404 Not Found");
         exit();
     }
     $id = intval($_GET['id']);
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {    
-	if (!isset($_SESSION['user']['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_SESSION['user']['id'])) {
         http_response_code(403);
         exit();
-    }	
-    $id = $_SESSION['good_id'] ?? 0;    
+    }
+    $id = $_SESSION['good_id'] ?? 0;
 }
 
 //Получаем лот из БД
@@ -30,7 +30,7 @@ WHERE lots.id = ?
 GROUP BY lots.id, lot_name, description, img_path, dt_end, initial_price, bid_step, category_name, user_id_author";
 $lot = db_fetch_data($con, $sql, [$id]);
 if (!isset($lot[0])) {
-	header("HTTP/1.0 404 Not Found");
+    header("HTTP/1.0 404 Not Found");
     exit();
 }
 $lot = $lot[0];
@@ -54,12 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO bids (dt_add, bid_price, user_id, lot_id) 
 				VALUES (NOW(), ?, ?, ?)";
         db_insert_data($con, $sql, [$cost, $_SESSION['user']['id'], $id]);
-		//Делаем переадресацию на эту же страницу методом GET
+        //Делаем переадресацию на эту же страницу методом GET
         header("Location: lot.php?id=$id");
         exit();
-    }       
+    }
     
-	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
+    //Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
     $errors['check'] = false;
 }
 

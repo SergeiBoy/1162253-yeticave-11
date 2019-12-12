@@ -75,7 +75,7 @@ function db_get_prepare_stmt($link, $sql, $data = [])
 }
 
 /**
- * Получает записи из БД (SELECT) методом подготовленного выражения 
+ * Получает записи из БД (SELECT) методом подготовленного выражения
  * на основе готового SQL запроса и переданных данных
  *
  * @param $con mysqli Ресурс соединения
@@ -84,21 +84,22 @@ function db_get_prepare_stmt($link, $sql, $data = [])
  *
  * @return array $result Массив данных в случае успеха, при ошибке mysql - bool false и выдает сообщение о ней
  */
-function db_fetch_data($con, $sql, $data = []) {
-	$stmt = db_get_prepare_stmt($con, $sql, $data);
-	mysqli_stmt_execute($stmt);
-	$result = mysqli_stmt_get_result($stmt);
-	if ($result === false) {
-		$error = mysqli_error($con);
+function db_fetch_data($con, $sql, $data = [])
+{
+    $stmt = db_get_prepare_stmt($con, $sql, $data);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result === false) {
+        $error = mysqli_error($con);
         print("Ошибка MySQL: " . $error);
-	} else {
-		$result = mysqli_fetch_all($result, MYSQLI_ASSOC);
-	}
-	return $result;
+    } else {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
+    return $result;
 }
 
 /**
- * Добавляет новую запись в БД методом подготовленного выражения 
+ * Добавляет новую запись в БД методом подготовленного выражения
  * на основе готового SQL запроса и переданных данных
  *
  * @param $con mysqli Ресурс соединения
@@ -107,16 +108,17 @@ function db_fetch_data($con, $sql, $data = []) {
  *
  * @return string $result id последней вставленной строки в случае успеха, при ошибке mysql - bool false и выдает сообщение о ней
  */
-function db_insert_data($con, $sql, $data = []) {
-	$stmt = db_get_prepare_stmt($con, $sql, $data);
-	$result = mysqli_stmt_execute($stmt);
-	if (!$result) {
-		$error = mysqli_error($con);
+function db_insert_data($con, $sql, $data = [])
+{
+    $stmt = db_get_prepare_stmt($con, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if (!$result) {
+        $error = mysqli_error($con);
         print("Ошибка MySQL: " . $error);
-	} else {
-		$result = mysqli_insert_id($con);
-	}
-	return $result;
+    } else {
+        $result = mysqli_insert_id($con);
+    }
+    return $result;
 }
 
 /**
@@ -227,30 +229,30 @@ function get_time_remaining($deadline_date)
 function get_time_since_adding($dt_add)
 {
     $time_since = time() - strtotime($dt_add);
-    $H = floor($time_since/3600);
-    $M = floor(($time_since%3600)/60);
-    if ($H < 24) {
-        if ($H%20 >= 2 && $H%20 <= 4) {
-            $HF = 'часа';
-        } elseif ($H%20 == 1) {
-            $HF = 'час';
+    $Hours = floor($time_since/3600);
+    $Minutes = floor(($time_since%3600)/60);
+    if ($Hours < 24) {
+        if ($Hours%20 >= 2 && $Hours%20 <= 4) {
+            $HFormat = 'часа';
+        } elseif ($Hours%20 === 1) {
+            $HFormat = 'час';
         } else {
-            $HF = 'часов';
+            $HFormat = 'часов';
         }
             
-        if ($M%100 >= 11 && $M%100 <= 20) {
-            $MF = 'минут';
-        } elseif ($M%10 > 5) {
-            $MF = 'минут';
-        } elseif ($M%10 === 1) {
-            $MF = 'минута';
-        } elseif ($M%10 >= 2 && $M%10 <= 4) {
-            $MF = 'минуты';
+        if ($Minutes%100 >= 11 && $Minutes%100 <= 20) {
+            $MFormat = 'минут';
+        } elseif ($Minutes%10 > 5) {
+            $MFormat = 'минут';
+        } elseif ($Minutes%10 === 1) {
+            $MFormat = 'минута';
+        } elseif ($Minutes%10 >= 2 && $Minutes%10 <= 4) {
+            $MFormat = 'минуты';
         } else {
-            $MF = 'минут';
+            $MFormat = 'минут';
         }
         
-        return ("$H $HF $M $MF назад");
+        return ("$Hours $HFormat $Minutes $MFormat назад");
     }
     
     return null;
@@ -259,25 +261,25 @@ function get_time_since_adding($dt_add)
 /**
  * Определяет является ли переданное значение положительным числом
  *
- * @param float/int/string $num Число
+ * @param float/int/string $number Число
  *
  * @return bool true, если является, иначе false
  */
-function is_positive_number($num)
+function is_positive_number($number)
 {
-    return (filter_var($num, FILTER_VALIDATE_FLOAT) && filter_var($num, FILTER_VALIDATE_FLOAT)>0);
+    return (filter_var($number, FILTER_VALIDATE_FLOAT) && filter_var($number, FILTER_VALIDATE_FLOAT)>0);
 }
 
 /**
  * Определяет является ли переданное значение положительным целым числом
  *
- * @param float/int/string $num Число
+ * @param float/int/string $number Число
  *
  * @return bool true, если является, иначе false
  */
-function is_positive_integer($num)
+function is_positive_integer($number)
 {
-    return (filter_var($num, FILTER_VALIDATE_INT) && filter_var($num, FILTER_VALIDATE_INT)>0);
+    return (filter_var($number, FILTER_VALIDATE_INT) && filter_var($number, FILTER_VALIDATE_INT)>0);
 }
 
 /**

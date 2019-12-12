@@ -16,8 +16,8 @@ if (!empty($_GET['search'])) {
         $sql = "SELECT COUNT(*) as count FROM lots
 		WHERE MATCH(lot_name,description) AGAINST(?) AND dt_end > CURRENT_TIMESTAMP";
         $lots_quantity = db_fetch_data($con, $sql, [$search]);
-		$lots_quantity = $lots_quantity[0]['count'] ?? 0;
-		
+        $lots_quantity = $lots_quantity[0]['count'] ?? 0;
+        
         //Рассчитываем пагинацию
         $lots_per_page = 9;
         $pages_quantity = ceil($lots_quantity/$lots_per_page);

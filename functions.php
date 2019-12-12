@@ -11,11 +11,11 @@
  */
 function is_not_valid_email($messages, $con, $email)
 {
-    $msg = false;
+    $message = false;
     if (empty($email)) {
-        $msg = $messages['fill_it'];
+        $message = $messages['fill_it'];
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $msg = $messages['fill_correct'];
+        $message = $messages['fill_correct'];
     } else {
         $sql = "SELECT id FROM users WHERE email = ?";
         $stmt = db_get_prepare_stmt($con, $sql, [$email]);
@@ -24,12 +24,12 @@ function is_not_valid_email($messages, $con, $email)
         if ($result === false) {
             $error = mysqli_error($con);
             print("Ошибка MySQL: " . $error);
-            $msg = $messages['fill_it'];
+            $message = $messages['fill_it'];
         } elseif (mysqli_num_rows($result) > 0) {
-            $msg = $messages['fill_another_email'];
+            $message = $messages['fill_another_email'];
         }
     }
-    return $msg;
+    return $message;
 }
 
 /**

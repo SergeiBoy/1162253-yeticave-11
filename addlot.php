@@ -9,6 +9,7 @@ if (!isset($_SESSION['user']['id'])) {
     http_response_code(403);
     exit();
 }
+
 //Создаем массив ошибок
 $errors = [];
 //Проверяем, что форма отправлена
@@ -65,13 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO lots (dt_add, lot_name, category_id, description, img_path, initial_price, bid_step, dt_end, user_id_author) 
 				VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
         $last_id = db_insert_data($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['user']['id']]);
-		if ($last_id) {
-			header("Location: lot.php?id=$last_id");
-			exit();
-		}
-    } 
-	
-	//Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
+        if ($last_id) {
+            header("Location: lot.php?id=$last_id");
+            exit();
+        }
+    }
+    
+    //Если есть ошибки в заполнении формы - отправляем массив с ошибками в шаблон
     $errors['check'] = false;
 }
 
