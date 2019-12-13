@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     //Если ошибок нет - добавляем пользователя в БД
     if (!count($errors)) {
-        add_user($con, $_POST['password'], $_POST['email'], $_POST['name'], $_POST['message']);
+        add_user($con, $_POST['password'], $_POST['email'], htmlspecialchars($_POST['name']), htmlspecialchars($_POST['message']));
         //Делаем переадресацию на форму входа
         header("Location: login.php");
         exit();

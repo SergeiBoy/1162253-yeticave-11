@@ -23,10 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     //Проверяем, чтобы была указана категория, и определяем id выбранной категории
+    $category_id = null;
     if (empty($_POST['category'])) {
         $errors['category'] = $messages['category'];
     } else {
-        $category_id = null;
         foreach ($categories as $category) {
             if ($category['category_name'] === $_POST['category']) {
                 $category_id = $category['id'];
@@ -65,7 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Записываем лот в БД
         $sql = "INSERT INTO lots (dt_add, lot_name, category_id, description, img_path, initial_price, bid_step, dt_end, user_id_author) 
 				VALUES (NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
-        $last_id = db_insert_data($con, $sql, [$_POST['lot-name'], $category_id, $_POST['message'], $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['user']['id']]);
+        $last_id = db_insert_data($con, $sql, [htmlspecialchars($_POST['lot-name']), $category_id, htmlspecialchars($_POST['message']),
+                    $file_url, $_POST['lot-rate'], $_POST['lot-step'], $_POST['lot-date'], $_SESSION['user']['id']]);
         if ($last_id) {
             header("Location: lot.php?id=$last_id");
             exit();

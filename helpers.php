@@ -300,6 +300,7 @@ function can_user_login($con, $email, $password)
     if ($result === false) {
         $error = mysqli_error($con);
         print("Ошибка MySQL: " . $error);
+        return false;
     }
     $user = mysqli_fetch_assoc($result);
     if (!$user) {
