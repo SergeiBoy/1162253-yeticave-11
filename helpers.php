@@ -229,30 +229,30 @@ function get_time_remaining($deadline_date)
 function get_time_since_adding($dt_add)
 {
     $time_since = time() - strtotime($dt_add);
-    $Hours = floor($time_since/3600);
-    $Minutes = floor(($time_since%3600)/60);
-    if ($Hours < 24) {
-        if ($Hours%20 >= 2 && $Hours%20 <= 4) {
-            $HFormat = 'часа';
-        } elseif ($Hours%20 === 1) {
-            $HFormat = 'час';
+    $hours = floor($time_since/3600);
+    $minutes = floor(($time_since%3600)/60);
+    if ($hours < 24) {
+        if ($hours%20 >= 2 && $hours%20 <= 4) {
+            $hours_format = 'часа';
+        } elseif ($hours%20 === 1) {
+            $hours_format = 'час';
         } else {
-            $HFormat = 'часов';
+            $hours_format = 'часов';
         }
             
-        if ($Minutes%100 >= 11 && $Minutes%100 <= 20) {
-            $MFormat = 'минут';
-        } elseif ($Minutes%10 > 5) {
-            $MFormat = 'минут';
-        } elseif ($Minutes%10 === 1) {
-            $MFormat = 'минута';
-        } elseif ($Minutes%10 >= 2 && $Minutes%10 <= 4) {
-            $MFormat = 'минуты';
+        if ($minutes%100 >= 11 && $minutes%100 <= 20) {
+            $minutes_format = 'минут';
+        } elseif ($minutes%10 > 5) {
+            $minutes_format = 'минут';
+        } elseif ($minutes%10 === 1) {
+            $minutes_format = 'минута';
+        } elseif ($minutes%10 >= 2 && $minutes%10 <= 4) {
+            $minutes_format = 'минуты';
         } else {
-            $MFormat = 'минут';
+            $minutes_format = 'минут';
         }
         
-        return ("$Hours $HFormat $Minutes $MFormat назад");
+        return ("$hours $hours_format $minutes $minutes_format назад");
     }
     
     return null;

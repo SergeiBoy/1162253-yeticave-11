@@ -11,26 +11,29 @@
  */
 function is_not_valid_email($messages, $con, $email)
 {
-    $message = false;
     if (empty($email)) {
-        $message = $messages['fill_it'];
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $message = $messages['fill_correct'];
-    } else {
-        $sql = "SELECT id FROM users WHERE email = ?";
-        $stmt = db_get_prepare_stmt($con, $sql, [$email]);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        if ($result === false) {
-            $error = mysqli_error($con);
-            print("Ошибка MySQL: " . $error);
-            $message = $messages['fill_it'];
-        } elseif (mysqli_num_rows($result) > 0) {
-            $message = $messages['fill_another_email'];
-        }
+        return $messages['fill_it'];
     }
-    return $message;
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return $messages['fill_correct'];
+    }
+    
+    $sql = "SELECT id FROM users WHERE email = ?";
+    $stmt = db_get_prepare_stmt($con, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    if ($result === false) {
+        $error = mysqli_error($con);
+        print("Ошибка MySQL: " . $error);
+        return $messages['fill_it'];
+    }
+    if (mysqli_num_rows($result) > 0) {
+        return $messages['fill_another_email'];
+    }
+    
+    return false;
 }
+
 
 /**
  * Добавляет пользователя в базу данных
